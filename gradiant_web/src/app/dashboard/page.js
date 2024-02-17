@@ -6,6 +6,7 @@ import { useFile } from '../context/csvContex';
 import  { useRouter } from 'next/navigation';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
+import { motion, AnimatePresence } from 'framer-motion';
 
 
 
@@ -18,6 +19,9 @@ export default function Dashboard() {
   const [kilogramosC02, setkilogramosC02] = useState(null);
   const [parsedData, setParsedData] = useState([]);
   const [parsedData2, setParsedData2] = useState([]);
+  const [selectedId, setSelectedId] = useState(null);
+
+
   const prices = [{time: Date.parse('2023-02-15 00:00')/1000, value: 0.11604},
                   {time: Date.parse('2023-02-15 01:00')/1000, value: 0.09151}, 
                   {time: Date.parse('2023-02-15 02:00')/1000, value: 0.09402}, 
@@ -215,7 +219,7 @@ const colors2 = {
               </div>
               <div>
                   <img src="/plane.gif" className='mb-[-100px]'/>
-                  <p className='text-[20px] text-white mb-5 text-center font-sans font-bold max-w-[800px] mx-auto '>abion</p>
+                  <p className='text-[20px] text-white mb-5 text-center font-sans font-bold max-w-[800px] mx-auto '>avión</p>
               </div>
           </Carousel>
         </div>
@@ -231,23 +235,76 @@ const colors2 = {
       </div>
  
       <div className='bg-[#B1E0FC] rounded-tr-[50px] mb-[50px] '> 
-        <div className='flex justify-left bg-black rounded-t-[50px] drop-shadow  '> 
-          <div className='ml-10 mt-10' >
-            <Chart data={parsedData} name="Light Consumption"/>
-          </div>
-          <div className='mt-10 ml-10'  >
-            <Chart data={prices} colors={colors1} name="Light Price"/>
-          </div>
-          <div className='mr-10 mt-10 ml-10' >
-            <Chart data={parsedData2} colors={colors2} name="Your Light Price"/>
-          </div>
+        <div className='flex justify-left bg-black rounded-t-[50px] drop-shadow'>
+          {[
+            { id: 'lightConsumption', data: parsedData, name: "Light Consumption" },
+            { id: 'lightPrice', data: prices, name: "Light Price" },
+            { id: 'yourLightPrice', data: parsedData2, name: "Your Light Price" }
+          ].map(chart => (
+            <motion.div key={chart.id} layoutId={chart.id} onClick={() => setSelectedId(chart.id)} className='ml-10 mt-10'>
+              <Chart data={chart.data} name={chart.name}/>
+            </motion.div>
+          ))}
           <div className="flex items-center py-auto mx-auto justify-center"> 
-            <p class="text-9xl text-center  move-up">👇</p>    
-          </div>
+            <p class="text-9xl text-center  move-up">👇</p>
+          </div>      
         </div>
       </div>
     <div>
-
+    <AnimatePresence>
+      {selectedId && (
+        <motion.div 
+          layoutId={selectedId} 
+          className="absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center z-50"
+          style={{ background: 'rgba(0, 0, 0, 0.5)' }} // Fondo semitransparente
+          onClick={() => setSelectedId(null)} // Cierra al hacer clic fuera
+        >
+          {/* Contenedor de la gráfica con estilo ampliado */}
+          <motion.div 
+            className="p-5 rounded-lg"
+            style={{
+              minWidth: '80vw', // Ajusta al tamaño que prefieras
+              minHeight: '80vh', // Ajusta al tamaño que prefieras
+              background: 'white',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+              position: 'relative', // Para posicionamiento absoluto del botón de cierre
+            }}
+            onClick={(e) => e.stopPropagation()} // Previene el cierre al hacer clic dentro
+          >
+            {/* Renderiza la gráfica seleccionada a gran escala */}
+            {selectedId === 'lightConsumption' && <Chart data={parsedData} name="Light Consumption" selectedId={selectedId}/>}
+            {selectedId === 'lightPrice' && <Chart data={prices} name="Light Price" selectedId={selectedId}/>}
+            {selectedId === 'yourLightPrice' && <Chart data={parsedData2} name="Your Light Price" selectedId={selectedId}/>}
+            
+            {/* Opcional: Botón de cierre */}
+            <motion.button 
+              onClick={() => setSelectedId(null)}
+              style={{
+                position: 'absolute',
+                top: '10px',
+                right: '10px',
+                border: 'none',
+                background: 'red',
+                color: 'white',
+                borderRadius: '50%',
+                width: '30px',
+                height: '30px',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                cursor: 'pointer',
+              }}
+            >
+              X
+            </motion.button>
+          </motion.div>
+        </motion.div>
+      )}
+      
+    </AnimatePresence>     
 
 
       </div>

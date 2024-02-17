@@ -5,6 +5,7 @@ export const Chart = props => {
 	const {
 		data,
 		name,
+		selectedId,
 		colors: {
 			backgroundColor = 'black',
 			lineColor = '#2962FF',
@@ -39,8 +40,8 @@ export const Chart = props => {
 					background: { type: ColorType.Solid, color: backgroundColor },
 					textColor,
 				},
-				width: chartContainerRef.current.clientWidth,
-				height: 200,
+				width: selectedId ? 1500 : chartContainerRef.current.clientWidth,
+				height: selectedId ? 700 : 200,
         grid: gridOptions,
 			});
 			chart.timeScale().fitContent();
