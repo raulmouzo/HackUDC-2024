@@ -1,13 +1,8 @@
 'use client';
 
 import { DragAndDrop } from "@/app/components/DragAndDrop";
-import { FiDownload } from "react-icons/fi";
+import { FiDownload, FiGithub } from "react-icons/fi";
 
-
-
-const handleDownloadCSV = async () => {
- 
-};
 
 
 
@@ -27,15 +22,23 @@ export default function Home() {
           </h1>
           <DragAndDrop/>
           
-          <button
-            onClick={handleDownloadCSV}
+          <button 
             className="flex items-center gap-2 text-gray-800 bg-gray-200 dark:bg-gray-700 dark:text-gray-100 px-4 py-2 rounded-md shadow-md hover:shadow-lg transition duration-300"
             style={{ marginTop: '20px' }}
           >
-            <FiDownload className="text-xl" />
+            <FiDownload className="text-xl" h  />
             Download CSV Example
           </button>
 
+          <a
+            href="https://github.com/raulmouzo/HackUDC-2024"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="absolute top-4 right-4 flex items-center gap-2 text-gray-800 dark:text-gray-100"
+          >
+            <FiGithub className="text-xl" />
+            GitHub
+          </a>
 
         </div>
       </div>
