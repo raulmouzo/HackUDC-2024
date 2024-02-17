@@ -348,7 +348,7 @@ const colors2 = {
       </div>
 
       <div className='flex justify-center items-center bg-black rounded-b-[50px] py-10'>
-        <p className='text-white font-bold'>Gracias por probarlo &lt;3</p>
+        <p className='text-white font-bold'>Thanks for your time &lt;3</p>
       </div>
 
     </main>
