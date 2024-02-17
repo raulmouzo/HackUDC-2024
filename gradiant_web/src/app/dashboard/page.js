@@ -4,8 +4,9 @@ import { useEffect, useState } from 'react';
 import { Chart } from "@/app/components/Chart";
 import { useFile } from '../context/csvContex';
 import  { useRouter } from 'next/navigation';
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
+
 
 
 export default function Dashboard() {
@@ -41,6 +42,24 @@ export default function Dashboard() {
                   {time: Date.parse('2023-02-15 21:00')/1000, value: 0.11863}, 
                   {time: Date.parse('2023-02-15 22:00')/1000, value: 0.11465}, 
                   {time: Date.parse('2023-02-15 23:00')/1000, value: 0.1134}];
+
+
+// Colores
+const colors1 = {
+  backgroundColor: 'black',
+  lineColor: '#651fff',
+  textColor: 'white',
+  areaTopColor: '#300f79',
+  areaBottomColor: '#160738',
+};
+
+const colors2 = {
+  backgroundColor: '#black',
+  lineColor: 'rgba(38, 198, 218, 1)',
+  textColor: '#d1d4dc',
+  areaTopColor: 'rgba(20, 170, 190, 0.56)',
+  areaBottomColor: 'rgba(38, 198, 218, 0.04)',
+};
 
   useEffect(() => {
     if (file === null){
