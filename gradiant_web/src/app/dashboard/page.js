@@ -194,7 +194,7 @@ export default function Dashboard() {
             <Chart data={parsedData} name="Light Consumption"/>
           </div>
           <div className='mt-10 ml-10'  >
-            <Chart data={parsedData} name="Light Price"/>
+            <Chart data={parsedData2} name="Light Price"/>
           </div>
           <div className='mr-10 mt-10 ml-10' >
             <Chart data={parsedData} name="Your Light Price"/>
