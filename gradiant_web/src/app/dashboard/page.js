@@ -48,22 +48,22 @@ export default function Dashboard() {
                   {time: Date.parse('2023-02-15 23:00')/1000, value: 0.1134}];
 
 
-// Colores
-const colors1 = {
-  backgroundColor: 'black',
-  lineColor: '#651fff',
-  textColor: 'white',
-  areaTopColor: '#300f79',
-  areaBottomColor: '#160738',
-};
+  // Colores
+  const colors1 = {
+    backgroundColor: 'black',
+    lineColor: '#651fff',
+    textColor: 'white',
+    areaTopColor: '#300f79',
+    areaBottomColor: '#160738',
+  };
 
-const colors2 = {
-  backgroundColor: '#black',
-  lineColor: 'rgba(38, 198, 218, 1)',
-  textColor: '#d1d4dc',
-  areaTopColor: 'rgba(20, 170, 190, 0.56)',
-  areaBottomColor: 'rgba(38, 198, 218, 0.04)',
-};
+  const colors2 = {
+    backgroundColor: '#black',
+    lineColor: 'rgba(38, 198, 218, 1)',
+    textColor: '#d1d4dc',
+    areaTopColor: 'rgba(20, 170, 190, 0.56)',
+    areaBottomColor: 'rgba(38, 198, 218, 0.04)',
+  };
 
   useEffect(() => {
     if (file === null){
@@ -237,16 +237,16 @@ const colors2 = {
       <div className='bg-[#B1E0FC] rounded-tr-[50px] mb-[50px] '> 
         <div className='flex justify-left bg-black rounded-t-[50px] drop-shadow'>
           {[
-            { id: 'lightConsumption', data: parsedData, name: "Light Consumption" },
-            { id: 'lightPrice', data: prices, name: "Light Price" },
-            { id: 'yourLightPrice', data: parsedData2, name: "Your Light Price" }
+            { id: 'lightConsumption', data: parsedData, name: "Light Consumption"},
+            { id: 'lightPrice', data: prices, colors: colors1, name: "Light Price" },
+            { id: 'yourLightPrice', data: parsedData2, colors: colors2, name: "Your Light Price" }
           ].map(chart => (
             <motion.div key={chart.id} layoutId={chart.id} onClick={() => setSelectedId(chart.id)} className='ml-10 mt-10'>
-              <Chart data={chart.data} name={chart.name}/>
+              <Chart data={chart.data} name={chart.name} colors={chart.colors}/>
             </motion.div>
           ))}
           <div className="flex items-center py-auto mx-auto justify-center"> 
-            <p class="text-9xl text-center  move-up">👇</p>
+            <p className="text-9xl text-center  move-up">👇</p>
           </div>      
         </div>
       </div>
@@ -276,8 +276,8 @@ const colors2 = {
           >
             {/* Renderiza la gráfica seleccionada a gran escala */}
             {selectedId === 'lightConsumption' && <Chart data={parsedData} name="Light Consumption" selectedId={selectedId}/>}
-            {selectedId === 'lightPrice' && <Chart data={prices} name="Light Price" selectedId={selectedId}/>}
-            {selectedId === 'yourLightPrice' && <Chart data={parsedData2} name="Your Light Price" selectedId={selectedId}/>}
+            {selectedId === 'lightPrice' && <Chart data={prices} name="Light Price" selectedId={selectedId} colors={colors1}/>}
+            {selectedId === 'yourLightPrice' && <Chart data={parsedData2} name="Your Light Price" selectedId={selectedId} colors={colors2}/>}
             
             {/* Opcional: Botón de cierre */}
             <motion.button 
