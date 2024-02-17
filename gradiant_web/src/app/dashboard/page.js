@@ -298,7 +298,7 @@ const colors2 = {
         </div>
         <div className='flex items-center max-w-40'>
           <div className='flex flex-col justify-center items-center h-full'>
-            <h2 className={`text-[90px] text-white mb-5 text-center justify-center font-sans  font-bold ${porcentajeConsumo < 30 ? 'text-white' : porcentajeConsumo < 50 ? 'text-yellow-500' : porcentajeConsumo < 80 ? 'text-green-600' : porcentajeConsumo < 150 ? 'text-orange-600' : 'text-red-700'}`}>
+            <h2 className={`text-[90px] text-white mb-5 text-center justify-center font-sans  font-bold ${porcentajeConsumo < 30 ? 'text-white' : porcentajeConsumo < 50 ? 'text-yellow-500' : porcentajeConsumo < 80 ? 'text-green-600' : porcentajeConsumo < 150 ? 'text-orange-700' : 'text-red-700'}`}>
               {porcentajeConsumo}%
             </h2>
             <p className='text-[20px] text-white mb-5 text-center font-sans font-semibold'>You consume {porcentajeConsumo}% of what a person consumes on average per day, that is {kilogramosC02} kg of CO2 per day.</p>
