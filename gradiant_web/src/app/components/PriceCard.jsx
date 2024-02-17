@@ -3,7 +3,7 @@ import React from 'react';
 
 function PriceCard({ price, title }) {
   return (
-    <div className='border-white border-[5px] rounded-lg h-[350px] w-[350px]'>
+    <div className='border-white border-[5px] rounded-lg h-[400px] w-[350px]'>
       <h3 className='text-[30px] font-sans font-semibold m-5 text-center'>
         {title}
       </h3>
