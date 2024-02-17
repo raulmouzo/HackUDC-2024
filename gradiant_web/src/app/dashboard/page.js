@@ -7,13 +7,17 @@ import  { useRouter } from 'next/navigation';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
 import { motion, AnimatePresence } from 'framer-motion';
+import PriceCard from '../components/PriceCard';
 
 
 
 export default function Dashboard() {
   const router = useRouter();
   const { file, setFile } = useFile();
-  const [priceData, setPriceData] = useState(null);
+  const [lowestPrice, setlowestPrice] = useState(null);
+  const [highestPrice, sethighestPrice] = useState(null);
+  const [cheapestPrice1, setCheapestPrice1] = useState(null);
+  const [cheapestPrice2, setCheapestPrice2] = useState(null);
 
   const [porcentajeConsumo, setporcentajeConsumo] = useState(null);
   const [kilogramosC02, setkilogramosC02] = useState(null);
@@ -48,22 +52,22 @@ export default function Dashboard() {
                   {time: Date.parse('2023-02-15 23:00')/1000, value: 0.1134}];
 
 
-  // Colores
-  const colors1 = {
-    backgroundColor: 'black',
-    lineColor: '#651fff',
-    textColor: 'white',
-    areaTopColor: '#300f79',
-    areaBottomColor: '#160738',
-  };
+// Colores
+const colors1 = {
+  backgroundColor: 'black',
+  lineColor: '#651fff',
+  textColor: 'white',
+  areaTopColor: '#300f79',
+  areaBottomColor: '#160738',
+};
 
-  const colors2 = {
-    backgroundColor: '#black',
-    lineColor: 'rgba(38, 198, 218, 1)',
-    textColor: '#d1d4dc',
-    areaTopColor: 'rgba(20, 170, 190, 0.56)',
-    areaBottomColor: 'rgba(38, 198, 218, 0.04)',
-  };
+const colors2 = {
+  backgroundColor: '#black',
+  lineColor: 'rgba(38, 198, 218, 1)',
+  textColor: '#d1d4dc',
+  areaTopColor: 'rgba(20, 170, 190, 0.56)',
+  areaBottomColor: 'rgba(38, 198, 218, 0.04)',
+};
 
   useEffect(() => {
     if (file === null){
@@ -71,17 +75,53 @@ export default function Dashboard() {
       return;
     }
 
-    const fetchPriceData = async () => {
+    const fetchLowestPrice = async () => {
       try {
         const response = await fetch('http://localhost:4000/api/prices/min');
         const data = await response.json();
-        setPriceData(data);
+        setlowestPrice(data);
+      } catch (error) {
+        console.error("Error al recuperar los datos:", error);
+      }
+    };
+
+    const fetchHighestPrice = async () => {
+      try {
+        const response = await fetch('http://localhost:4000/api/prices/max');
+        const data = await response.json();
+        sethighestPrice(data);
+      } catch (error) {
+        console.error("Error al recuperar los datos:", error);
+      }
+    };
+
+    const fetchCheapestPrice1 = async () => {
+      try {
+        const response = await fetch('http://localhost:4000/api/prices/cheapests1');
+        const data = await response.json();
+        setCheapestPrice1(data);
+        console.log("AAAA", data);
+      } catch (error) {
+        console.error("Error al recuperar los datos:", error);
+      }
+    };
+
+    const fetchCheapestPrice2 = async () => {
+      try {
+        const response = await fetch('http://localhost:4000/api/prices/cheapests2');
+        const data = await response.json();
+        setCheapestPrice2(data);
       } catch (error) {
         console.error("Error al recuperar los datos:", error);
       }
     };
   
-    fetchPriceData();
+    fetchLowestPrice();
+    fetchHighestPrice();
+    fetchCheapestPrice1();
+    fetchCheapestPrice2();
+    
+
     procesarCSV(file);
     ParsearCSVGráficas(file, setParsedData);
     ParsearCSVGráficasPrecio(file, setParsedData2);
@@ -242,7 +282,7 @@ export default function Dashboard() {
 
               {porcentajeConsumo}%
             </h2>
-            <p className='text-[20px] text-white mb-5 text-center font-sans font-semibold'>Consumes el {porcentajeConsumo}% de lo que consume una persona de media al día, esto supone {kilogramosC02} kg de CO2 diariamente</p>
+            <p className='text-[20px] text-white mb-5 text-center font-sans font-semibold'>You consume {porcentajeConsumo}% of what a person consumes on average per day, that is {kilogramosC02} kg of CO2 per day.</p>
           </div>
         </div>
 
@@ -251,9 +291,9 @@ export default function Dashboard() {
       <div className='bg-[#B1E0FC] rounded-tr-[50px] mb-[50px] '> 
         <div className='flex justify-left bg-black rounded-t-[50px] drop-shadow'>
           {[
-            { id: 'lightConsumption', data: parsedData, name: "Light Consumption"},
-            { id: 'lightPrice', data: prices, colors: colors1, name: "Light Price" },
-            { id: 'yourLightPrice', data: parsedData2, colors: colors2, name: "Your Light Price" }
+            { id: 'lightConsumption', data: parsedData, name: "Light Consumption" },
+            { id: 'lightPrice', data: prices, name: "Light Price", colors: colors1  },
+            { id: 'yourLightPrice', data: parsedData2, name: "Your Light Price", colors: colors2}
           ].map(chart => (
             <motion.div key={chart.id} layoutId={chart.id} onClick={() => setSelectedId(chart.id)} className='ml-10 mt-10'>
               <Chart data={chart.data} name={chart.name} colors={chart.colors}/>
@@ -264,64 +304,82 @@ export default function Dashboard() {
           </div>      
         </div>
       </div>
-    <div>
-    <AnimatePresence>
-      {selectedId && (
-        <motion.div 
-          layoutId={selectedId} 
-          className="absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center z-50"
-          style={{ background: 'rgba(0, 0, 0, 0.5)' }} // Fondo semitransparente
-          onClick={() => setSelectedId(null)} // Cierra al hacer clic fuera
-        >
-          {/* Contenedor de la gráfica con estilo ampliado */}
+
+      <div>
+      <AnimatePresence>
+        {selectedId && (
           <motion.div 
-            className="p-5 rounded-lg"
-            style={{
-              minWidth: '80vw', // Ajusta al tamaño que prefieras
-              minHeight: '80vh', // Ajusta al tamaño que prefieras
-              background: 'white',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-              position: 'relative', // Para posicionamiento absoluto del botón de cierre
-            }}
-            onClick={(e) => e.stopPropagation()} // Previene el cierre al hacer clic dentro
+            layoutId={selectedId} 
+            className="absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center z-50"
+            style={{ background: 'rgba(0, 0, 0, 0.5)' }} // Fondo semitransparente
+            onClick={() => setSelectedId(null)} // Cierra al hacer clic fuera
           >
-            {/* Renderiza la gráfica seleccionada a gran escala */}
-            {selectedId === 'lightConsumption' && <Chart data={parsedData} name="Light Consumption" selectedId={selectedId}/>}
-            {selectedId === 'lightPrice' && <Chart data={prices} name="Light Price" selectedId={selectedId} colors={colors1}/>}
-            {selectedId === 'yourLightPrice' && <Chart data={parsedData2} name="Your Light Price" selectedId={selectedId} colors={colors2}/>}
-            
-            {/* Opcional: Botón de cierre */}
-            <motion.button 
-              onClick={() => setSelectedId(null)}
+            {/* Contenedor de la gráfica con estilo ampliado */}
+            <motion.div 
+              className="p-5 rounded-lg"
               style={{
-                position: 'absolute',
-                top: '10px',
-                right: '10px',
-                border: 'none',
-                background: 'red',
-                color: 'white',
-                borderRadius: '50%',
-                width: '30px',
-                height: '30px',
+                minWidth: '80vw', // Ajusta al tamaño que prefieras
+                minHeight: '80vh', // Ajusta al tamaño que prefieras
+                background: 'white',
                 display: 'flex',
+                flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
-                cursor: 'pointer',
+                position: 'relative', // Para posicionamiento absoluto del botón de cierre
               }}
+              onClick={(e) => e.stopPropagation()} // Previene el cierre al hacer clic dentro
             >
-              X
-            </motion.button>
+              {/* Renderiza la gráfica seleccionada a gran escala */}
+              {selectedId === 'lightConsumption' && <Chart data={parsedData} name="Light Consumption" selectedId={selectedId}/>}
+              {selectedId === 'lightPrice' && <Chart data={prices} name="Light Price" selectedId={selectedId} colors={colors1}/>}
+              {selectedId === 'yourLightPrice' && <Chart data={parsedData2} name="Your Light Price" selectedId={selectedId} colors={colors2}/>}
+              
+              {/* Opcional: Botón de cierre */}
+              <motion.button 
+                onClick={() => setSelectedId(null)}
+                style={{
+                  position: 'absolute',
+                  top: '10px',
+                  right: '10px',
+                  border: 'none',
+                  background: 'red',
+                  color: 'white',
+                  borderRadius: '50%',
+                  width: '30px',
+                  height: '30px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                }}
+              >
+                X
+              </motion.button>
+            </motion.div>
           </motion.div>
-        </motion.div>
-      )}
-      
-    </AnimatePresence>     
+        )}
+        
+        </AnimatePresence>     
 
 
       </div>
+
+      <div className='flex gap-[20px] mx-10 flex-col'>
+        <h3 className='text-[30px] text-white font-sans font-semibold'>
+         Featured Daily Prices
+        </h3>   
+        <div className='flex justify-between'>
+          <PriceCard price={lowestPrice} title="Lowest Price"/>
+          <PriceCard price={highestPrice} title="Highest Price"/>
+          <PriceCard price={cheapestPrice1} title="Chepest Price 1"/>
+          <PriceCard price={cheapestPrice2} title="Cheapest Price 2"/>
+        </div>
+      </div>
+
+      <div className='flex justify-center items-center bg-black rounded-b-[50px] py-10'>
+        <p className='text-white font-bold'>Thanks for your time &lt;3</p>
+      </div>
+
     </main>
   );
 }
