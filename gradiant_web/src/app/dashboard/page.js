@@ -236,22 +236,15 @@ const colors2 = {
               >
               <div>
                   <img src="/Carr.gif" className='mb-[-100px]'/>
-                  
-                  <p className='text-[20px] text-white mb-5 text-center font-sans font-bold max-w-[800px] mx-auto '>Coche</p>
               </div>
               <div>
                   <img src="/ice.gif" className='mb-[-100px]'/>
-
-                  <p className='text-[20px] text-white mb-5 text-center font-sans font-bold max-w-[800px] mx-auto '>Hielo</p>
-
               </div>
               <div>
                   <img src="/tree.gif" className='mb-[-100px]'/>
-                  <p className='text-[20px] text-white mb-5 text-center font-sans font-bold max-w-[800px] mx-auto '>arbol</p>
               </div>
               <div>
                   <img src="/plane.gif" className='mb-[-100px]'/>
-                  <p className='text-[20px] text-white mb-5 text-center font-sans font-bold max-w-[800px] mx-auto '>avión</p>
               </div>
           </Carousel>
         </div>
@@ -260,7 +253,7 @@ const colors2 = {
             <h2 className="text-[90px] text-white mb-5 text-center justify-center font-sans font-bold">
               {porcentajeConsumo}%
             </h2>
-            <p className='text-[20px] text-white mb-5 text-center font-sans font-semibold'>Consumes el {porcentajeConsumo}% de lo que consume una persona de media al día, esto supone {kilogramosC02} kg de CO2 diariamente</p>
+            <p className='text-[20px] text-white mb-5 text-center font-sans font-semibold'>You consume {porcentajeConsumo}% of what a person consumes on average per day, that is {kilogramosC02} kg of CO2 per day.</p>
           </div>
         </div>
 
