@@ -409,6 +409,28 @@ const colors2 = {
             Download CSV as Excel
           </h4>
       </button>
+
+      
+      <div className="bg-blue-500 p-6 rounded-lg shadow-md">
+      <h3 className="text-2xl text-white font-bold mb-4">Consejos para Ahorrar Electricidad</h3>
+      <ul className="text-white">
+        <li className="mb-2">
+          Utiliza bombillas LED en lugar de bombillas incandescentes.
+        </li>
+        <li className="mb-2">
+          Apaga las luces cuando no las necesites.
+        </li>
+        <li className="mb-2">
+          Desconecta los dispositivos electrónicos cuando no los uses para evitar el consumo en modo espera.
+        </li>
+        <li className="mb-2">
+          Aprovecha la luz natural abriendo cortinas y persianas durante el día.
+        </li>
+        <li className="mb-2">
+          Usa electrodomésticos eficientes en energía y ajusta la configuración de temperatura en el aire acondicionado y la calefacción.
+        </li>
+      </ul>
+    </div>
       <footer className='flex justify-center items-center bg-black rounded-b-[50px] py-10'>
         <p className='text-white font-bold'>Thanks for your time &lt;3</p>
       </footer>
