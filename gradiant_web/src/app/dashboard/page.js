@@ -89,7 +89,7 @@ export default function Dashboard() {
   return (
     <main className="flex flex-col justify-between">
 
-      <div className='flex bg-[#B1E0FC] mb-3 pb-10'>
+      <div className='flex bg-[#B1E0FC] pb-10'>
         <div className='items-center'>
             <Carousel
               className='max-w-[50vw] items-center mx-auto'
@@ -99,24 +99,27 @@ export default function Dashboard() {
               showThumbs={false} // Oculta las miniaturas (thumbnails) de las imágenes
               infiniteLoop={true} // Permite que el carrusel se repita infinitamente
               autoPlay={true} // Opcional: para que el carrusel reproduzca automáticamente
-              interval={5000}
+              interval={3200}
 
               >
               <div>
                   <img src="/Carr.gif" className='mb-[-100px]'/>
-                  <p className='text-[20px] text-white mb-5 text-center font-sans font-semibold max-w-[800px] mx-auto '>Coche</p>
+                  
+                  <p className='text-[20px] text-white mb-5 text-center font-sans font-bold max-w-[800px] mx-auto '>Coche</p>
               </div>
               <div>
                   <img src="/ice.gif" className='mb-[-100px]'/>
-                  <p className='text-[20px] text-white mb-5 text-center font-sans font-semibold max-w-[800px] mx-auto '>ielo</p>
+
+                  <p className='text-[20px] text-white mb-5 text-center font-sans font-bold max-w-[800px] mx-auto '>Hielo</p>
+
               </div>
               <div>
                   <img src="/tree.gif" className='mb-[-100px]'/>
-                  <p className='text-[20px] text-white mb-5 text-center font-sans font-semibold max-w-[800px] mx-auto '>arbol</p>
+                  <p className='text-[20px] text-white mb-5 text-center font-sans font-bold max-w-[800px] mx-auto '>arbol</p>
               </div>
               <div>
                   <img src="/plane.gif" className='mb-[-100px]'/>
-                  <p className='text-[20px] text-white mb-5 text-center font-sans font-semibold max-w-[800px] mx-auto '>abion</p>
+                  <p className='text-[20px] text-white mb-5 text-center font-sans font-bold max-w-[800px] mx-auto '>abion</p>
               </div>
           </Carousel>
         </div>
@@ -132,11 +135,12 @@ export default function Dashboard() {
       </div>
       
 
-      <div className='flex justify-between mx-5 cap-10'>
-        <Chart data={data} />
-        <Chart data={data} />
-        <Chart data={data} />
-        
+      <div className='flex justify-between cap-10 bg-[#FFDEB3]'>
+      <Chart data={data} />
+      <Chart data={data} />
+      <Chart data={data} />
+
+          
       </div>
 
       {priceData && (

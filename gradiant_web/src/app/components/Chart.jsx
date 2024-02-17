@@ -39,7 +39,7 @@ export const Chart = props => {
 					textColor,
 				},
 				width: chartContainerRef.current.clientWidth,
-				height: 300,
+				height: 200,
         grid: gridOptions,
 			});
 			chart.timeScale().fitContent();
@@ -59,7 +59,7 @@ export const Chart = props => {
 	);
 
   return (
-    <div className=' bg-black border-[1px] rounded-[15px] py-5 px-10 font-semibold w-[600px]'>
+    <div className=' bg-black border-[3px] rounded-[15px] py-5 px-10 font-semibold min-w-[400px]'>
         <h2 className="text-[36px] text-white mb-5">
             Light Price
         </h2>
