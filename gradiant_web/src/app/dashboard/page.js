@@ -3,12 +3,21 @@
 import { useEffect, useState } from 'react';
 import { Chart } from "@/app/components/Chart";
 import { useFile } from '../context/csvContex';
+import  { useRouter } from 'next/navigation';
 
 export default function Dashboard() {
+  const router = useRouter();
   const { file, setFile } = useFile();
   const [priceData, setPriceData] = useState(null);
+  const [porcentajeConsumo, setporcentajeConsumo] = useState(null);
+  const [kilogramosC02, setkilogramosC02] = useState(null);
 
   useEffect(() => {
+    if (file === null){
+      router.push('/');
+      return;
+    }
+
     const fetchPriceData = async () => {
       try {
         const response = await fetch('http://localhost:4000/api/prices/min');
@@ -18,8 +27,10 @@ export default function Dashboard() {
         console.error("Error al recuperar los datos:", error);
       }
     };
+  
 
     fetchPriceData();
+    procesarCSV(file);
   }, []); 
 
   const procesarCSV = (file) => {
@@ -52,6 +63,9 @@ export default function Dashboard() {
         // Aquí necesitas actualizar tu manejo del DOM o mejor aún, usar el estado de React para renderizar esta información
         console.log(`Consumes el ${sum.toFixed(2)}% de lo que consume una persona de media al día, esto supone el ${kgCO2.toFixed(2)}kg de CO2 diariamente`);
         console.log(`Este CO2 supone blablabla para el planeta.`);
+
+        setporcentajeConsumo(sum.toFixed(2));
+        setkilogramosC02(kgCO2.toFixed(2));
     };
 
     reader.readAsText(file);
@@ -61,16 +75,16 @@ export default function Dashboard() {
     <main className="flex flex-col justify-between">
 
       <div className='flex bg-[#8DE1FD] mb-3'>
-        <div className=''>
+        <div className='items-center'>
           <img src="/image.jpg" alt="Descripción de la imagen" className=" h-[500px]" />
-          <h2 className="text-[36px] text-white mb-5 text-center font-sans font-semibold">
-            ¿Cómo funciona?
+          <h2 className="text-[24px] text-white mb-5 text-center font-sans font-semibold max-w-[800px] mx-auto">
+            Consumes el {porcentajeConsumo}% de lo que consume una persona de media al día, esto supone {kilogramosC02} kg de CO2 diariamente
           </h2>
         </div>
         <div className='flex items-center mx-auto'>
           <div className='flex flex-col justify-center items-center h-full'>
             <h2 className="text-[90px] text-white mb-5 text-center justify-center font-sans font-bold">
-              33%
+              {porcentajeConsumo}%
             </h2>
           </div>
         </div>
@@ -83,13 +97,6 @@ export default function Dashboard() {
         <Chart />
         <Chart />
       </div>
-
-      {file && (
-                <div>
-                    <p>Nombre del archivo: {file.name}</p>
-                    <p>Tamaño del archivo: {file.size} bytes</p>
-                </div>
-      )}
 
       {priceData && (
         <div>
