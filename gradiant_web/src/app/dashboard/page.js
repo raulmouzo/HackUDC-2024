@@ -411,7 +411,7 @@ const colors2 = {
       </button>
 
       
-      <div className="bg-blue-500 p-6 rounded-lg shadow-md">
+      <div className="bg-blue-500 p-6 rounded-lg shadow-md mx-10">
       <h3 className="text-2xl text-white font-bold mb-4">Consejos para Ahorrar Electricidad</h3>
       <ul className="text-white">
         <li className="mb-2">
