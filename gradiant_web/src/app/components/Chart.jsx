@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from 'react';
 export const Chart = props => {
 	const {
 		data,
+		name,
 		colors: {
 			backgroundColor = 'black',
 			lineColor = '#2962FF',
@@ -61,7 +62,7 @@ export const Chart = props => {
   return (
     <div className=' bg-black border-[1px] rounded-[15px] py-5 px-10 font-semibold w-[600px]'>
         <h2 className="text-[36px] text-white mb-5">
-            Light Price
+            {name}
         </h2>
         <div ref={chartContainerRef} />
     </div>

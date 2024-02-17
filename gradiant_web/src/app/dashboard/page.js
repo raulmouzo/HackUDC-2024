@@ -154,9 +154,9 @@ export default function Dashboard() {
  
 
       <div className='flex justify-between mx-5 cap-10'>
-        <Chart data={parsedData} />
-        <Chart data={parsedData} />
-        <Chart data={parsedData} />
+        <Chart data={parsedData} name="Light Consumption"/>
+        <Chart data={parsedData} name="Light Price"/>
+        <Chart data={parsedData} name="Your Light Price"/>
         
       </div>
 
