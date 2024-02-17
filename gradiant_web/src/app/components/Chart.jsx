@@ -42,10 +42,19 @@ export const Chart = props => {
 				},
 				width: selectedId ? 1500 : chartContainerRef.current.clientWidth,
 				height: selectedId ? 700 : 200,
-        grid: gridOptions,
+        		grid: gridOptions,
+				timeScale: {
+					tickMarkFormatter: (time, tickMarkType, locale) => {
+						const date = new Date(time * 1000);
+						const hours = date.getHours().toString().padStart(2, '0');
+						const minutes = date.getMinutes().toString().padStart(2, '0');
+						return `${hours}`;
+					},
+				},
 			});
 			chart.timeScale().fitContent();
-
+			
+			
 			const newSeries = chart.addAreaSeries({ lineColor, topColor: areaTopColor, bottomColor: areaBottomColor });
 			newSeries.setData(data);
 
