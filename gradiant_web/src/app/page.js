@@ -1,6 +1,6 @@
 'use client';
 
-import { DragAndDrop } from "@/components/DragAndDrop";
+import { DragAndDrop } from "@/app/components/DragAndDrop";
 
 export default function Home() {
   return (
