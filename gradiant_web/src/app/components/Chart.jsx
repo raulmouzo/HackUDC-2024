@@ -1,89 +1,62 @@
-import React, { useRef, useEffect } from 'react';
-import { createChart } from 'lightweight-charts';
+import { createChart, ColorType } from 'lightweight-charts';
+import React, { useEffect, useRef } from 'react';
 
-export const Chart = () => {
-  const chartContainerRef = useRef();
+export const Chart = props => {
+	const {
+		data,
+		colors: {
+			backgroundColor = 'black',
+			lineColor = '#2962FF',
+			textColor = 'white',
+			areaTopColor = '#2962FF',
+			areaBottomColor = 'rgba(41, 98, 255, 0.28)',
+		} = {},
+    gridOptions = {
+      vertLines: {
+        color: '#333', // Color de las líneas verticales
+        style: 1, // Estilo de las líneas verticales (0: Sólido, 1: Punteado, 2: Rayado)
+        visible: true, // Visibilidad de las líneas verticales
+      },
+      horzLines: {
+        color: '#333', // Color de las líneas horizontales
+        style: 0, // Estilo de las líneas horizontales (0: Sólido, 1: Punteado, 2: Rayado)
+        visible: true, // Visibilidad de las líneas horizontales
+      },
+    },
+	} = props;
 
-  useEffect(() => {
-    if (chartContainerRef.current) {
-      // Crea el gráfico dentro del elemento referenciado.
-      const chart = createChart(chartContainerRef.current, {
-        width: 550,
-        height: 200,
-        layout: { textColor: 'white', background: { type: 'solid', color: 'black' }},
-        grid: {
-        vertLines: {
-            visible: false,
-        },
-        horzLines: {
-            visible: false,
-        },
-        },
-        rightPriceScale: {
-        borderColor: '#485c7b',
-        },
-        timeScale: {
-        borderColor: '#485c7b',
-        },
+	const chartContainerRef = useRef();
 
-        rightPriceScale: {
-            scaleMargins: {
-              top: 0.2,
-              bottom: 0.2,
-            },
-            borderVisible: false,
-          },
-          timeScale: {
-            borderVisible: false,
-          },
-          crosshair: {
-            vertLine: {
-              labelVisible: false,
-            },
-          },
-          
-      });
+	useEffect(
+		() => {
+			const handleResize = () => {
+				chart.applyOptions({ width: chartContainerRef.current.clientWidth });
+			};
 
-      // Crea la serie de líneas.
-      const lineSeries = chart.addAreaSeries({
-        topColor: 'rgba(0, 150, 136, 0.56)',
-        bottomColor: 'rgba(0, 150, 136, 0.04)',
-        lineColor: 'rgba(0, 150, 136, 1)',
-        lineWidth: 2,
-      });
+			const chart = createChart(chartContainerRef.current, {
+				layout: {
+					background: { type: ColorType.Solid, color: backgroundColor },
+					textColor,
+				},
+				width: chartContainerRef.current.clientWidth,
+				height: 300,
+        grid: gridOptions,
+			});
+			chart.timeScale().fitContent();
 
-      // Establece los datos de la serie.
-      lineSeries.setData([
-        { time: '2019-04-11', value: 80.01 },
-        { time: '2019-04-12', value: 96.63 },
-        { time: '2019-04-13', value: 76.64 },
-        { time: '2019-04-14', value: 81.89 },
-        { time: '2019-04-15', value: 74.43 },
-        { time: '2019-04-16', value: 80.01 },
-        { time: '2019-04-17', value: 96.63 },
-        { time: '2019-04-18', value: 76.64 },
-        { time: '2019-04-19', value: 81.89 },
-        { time: '2019-04-20', value: 74.43 },
-        { time: '2019-04-21', value: 80.01 },
-        { time: '2019-04-22', value: 96.63 },
-        { time: '2019-04-23', value: 76.64 },
-        { time: '2019-04-24', value: 81.89 },
-        { time: '2019-04-25', value: 74.43 },
-        { time: '2019-04-26', value: 80.01 },
-        { time: '2019-04-27', value: 96.63 },
-        { time: '2019-04-28', value: 76.64 },
-        { time: '2019-04-29', value: 81.89 },
-        { time: '2019-04-30', value: 74.43 },
-        
-      ]);
+			const newSeries = chart.addAreaSeries({ lineColor, topColor: areaTopColor, bottomColor: areaBottomColor });
+			newSeries.setData(data);
 
-      chart.timeScale().fitContent();
+			window.addEventListener('resize', handleResize);
 
-      return () => {
-        chart.remove();
-      };
-    }
-  }, []);
+			return () => {
+				window.removeEventListener('resize', handleResize);
+
+				chart.remove();
+			};
+		},
+		[data, backgroundColor, lineColor, textColor, areaTopColor, areaBottomColor,gridOptions]
+	);
 
   return (
     <div className=' bg-black border-[1px] rounded-[15px] py-5 px-10 font-semibold w-[600px]'>
@@ -94,3 +67,5 @@ export const Chart = () => {
     </div>
   );
 };
+
+
