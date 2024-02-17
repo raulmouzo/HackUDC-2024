@@ -14,7 +14,6 @@ export const DragAndDrop = () => {
 		const file = files[0].file
 		console.log(file)
         if (files.length > 0) {
-            //procesarCSV(file);
             setFile(file);
             router.push('/dashboard');
         }
@@ -28,6 +27,8 @@ export const DragAndDrop = () => {
 			maxFiles={1}
 			label="Drop here your csv file"
 			onChange={handleFileChange}
+			className='h-[40vh]'
+			color='white'
 		/>
     );
 }
