@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 
-
 @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
 
 .lobster-regular {
@@ -15,6 +14,10 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
 }
 
 @media (prefers-color-scheme: dark) {
