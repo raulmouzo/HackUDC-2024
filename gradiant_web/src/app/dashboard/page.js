@@ -87,7 +87,7 @@ export default function Dashboard() {
   }
 
   return (
-    <main className="flex flex-col justify-between">
+    <main className="flex flex-col justify-between overflow-hidden">
 
       <div className='flex bg-[#B1E0FC] pb-10'>
         <div className='items-center'>
@@ -133,7 +133,8 @@ export default function Dashboard() {
         </div>
 
       </div>
-      
+      <div class="wave"></div>
+ 
 
       <div className='flex justify-between cap-10 bg-[#FFDEB3]'>
       <Chart data={data} />
