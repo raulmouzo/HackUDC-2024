@@ -236,10 +236,10 @@ const colors2 = {
             <Chart data={parsedData} name="Light Consumption"/>
           </div>
           <div className='mt-10 ml-10'  >
-            <Chart data={prices} name="Light Price"/>
+            <Chart data={prices} colors={colors1} name="Light Price"/>
           </div>
           <div className='mr-10 mt-10 ml-10' >
-            <Chart data={parsedData2} name="Your Light Price"/>
+            <Chart data={parsedData2} colors={colors2} name="Your Light Price"/>
           </div>
           <div className="flex items-center py-auto mx-auto justify-center"> 
             <p class="text-9xl text-center  move-up">👇</p>    
