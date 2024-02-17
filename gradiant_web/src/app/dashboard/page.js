@@ -17,7 +17,30 @@ export default function Dashboard() {
   const [kilogramosC02, setkilogramosC02] = useState(null);
   const [parsedData, setParsedData] = useState([]);
   const [parsedData2, setParsedData2] = useState([]);
-  const precios = [0.09151, 0.09402, 0.09571, 0.09494, 0.09517, 0.09438, 0.09343, 0.09265, 0.08963, 0.08415, 0.07765, 0.07165, 0.0693, 0.06982, 0.06897, 0.06762, 0.07298, 0.08434, 0.10751, 0.12783, 0.11863, 0.11465, 0.1134, 0.11604];
+  const prices = [{time: Date.parse('2023-02-15 00:00')/1000, value: 0.11604},
+                  {time: Date.parse('2023-02-15 01:00')/1000, value: 0.09151}, 
+                  {time: Date.parse('2023-02-15 02:00')/1000, value: 0.09402}, 
+                  {time: Date.parse('2023-02-15 03:00')/1000, value: 0.09571}, 
+                  {time: Date.parse('2023-02-15 04:00')/1000, value: 0.09494}, 
+                  {time: Date.parse('2023-02-15 05:00')/1000, value: 0.09517}, 
+                  {time: Date.parse('2023-02-15 06:00')/1000, value: 0.09438}, 
+                  {time: Date.parse('2023-02-15 07:00')/1000, value: 0.09343}, 
+                  {time: Date.parse('2023-02-15 08:00')/1000, value: 0.09265}, 
+                  {time: Date.parse('2023-02-15 09:00')/1000, value: 0.08963}, 
+                  {time: Date.parse('2023-02-15 10:00')/1000, value: 0.08415}, 
+                  {time: Date.parse('2023-02-15 11:00')/1000, value: 0.07765}, 
+                  {time: Date.parse('2023-02-15 12:00')/1000, value: 0.07165}, 
+                  {time: Date.parse('2023-02-15 13:00')/1000, value: 0.0693}, 
+                  {time: Date.parse('2023-02-15 14:00')/1000, value: 0.06982}, 
+                  {time: Date.parse('2023-02-15 15:00')/1000, value: 0.06897}, 
+                  {time: Date.parse('2023-02-15 16:00')/1000, value: 0.06762}, 
+                  {time: Date.parse('2023-02-15 17:00')/1000, value: 0.07298}, 
+                  {time: Date.parse('2023-02-15 18:00')/1000, value: 0.08434}, 
+                  {time: Date.parse('2023-02-15 19:00')/1000, value: 0.10751}, 
+                  {time: Date.parse('2023-02-15 20:00')/1000, value: 0.12783}, 
+                  {time: Date.parse('2023-02-15 21:00')/1000, value: 0.11863}, 
+                  {time: Date.parse('2023-02-15 22:00')/1000, value: 0.11465}, 
+                  {time: Date.parse('2023-02-15 23:00')/1000, value: 0.1134}];
 
   useEffect(() => {
     if (file === null){
@@ -108,6 +131,7 @@ export default function Dashboard() {
   }
 
   const ParsearCSVGráficasPrecio = (file, setParsedData) => {
+    const precios = [0.09151, 0.09402, 0.09571, 0.09494, 0.09517, 0.09438, 0.09343, 0.09265, 0.08963, 0.08415, 0.07765, 0.07165, 0.0693, 0.06982, 0.06897, 0.06762, 0.07298, 0.08434, 0.10751, 0.12783, 0.11863, 0.11465, 0.1134, 0.11604]
     const reader = new FileReader();
 
     reader.onload = function(event) {
@@ -138,7 +162,6 @@ export default function Dashboard() {
     };
     reader.readAsText(file);
   }
-
 
   return (
     <main className="flex flex-col justify-between overflow-hidden">
@@ -194,10 +217,10 @@ export default function Dashboard() {
             <Chart data={parsedData} name="Light Consumption"/>
           </div>
           <div className='mt-10 ml-10'  >
-            <Chart data={parsedData2} name="Light Price"/>
+            <Chart data={prices} name="Light Price"/>
           </div>
           <div className='mr-10 mt-10 ml-10' >
-            <Chart data={parsedData} name="Your Light Price"/>
+            <Chart data={parsedData2} name="Your Light Price"/>
           </div>
           <div className="flex items-center py-auto mx-auto justify-center"> 
             <p class="text-9xl text-center  move-up">👇</p>    
