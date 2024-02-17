@@ -61,7 +61,7 @@ export const Chart = props => {
 	);
 
   return (
-    <div className=' bg-black border-[3px] rounded-[15px] py-5 px-10 font-semibold min-w-[400px]'>
+    <div className=' bg-black border-[5px] rounded-[15px] py-5 px-10 font-semibold min-w-[400px]'>
         <h2 className="text-[36px] text-white mb-5">
             {name}
         </h2>
@@ -69,5 +69,6 @@ export const Chart = props => {
     </div>
   );
 };
+
 
 

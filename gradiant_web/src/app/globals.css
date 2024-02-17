@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+
+.lobster-regular {
+  font-family: "Lobster", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -24,6 +33,9 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+
+
+
 }
 
 @layer utilities {
@@ -182,7 +194,7 @@ body {
 
 
 .drop-shadow {
-  box-shadow: 0px -8px 20px rgba(0, 0, 0, 0.4);
+  box-shadow: 0px -8px 20px rgba(0, 0, 0, 0.2);
 
 }
 

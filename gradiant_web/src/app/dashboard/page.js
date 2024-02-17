@@ -93,6 +93,7 @@ export default function Dashboard() {
     reader.onload = function(event) {
         const content = event.target.result;
         const lines = content.split('\n');
+
         let sum = 0;
         let kgCO2 = 0;
         let kgCO2MediaDia = 14;
@@ -116,6 +117,7 @@ export default function Dashboard() {
 
         setporcentajeConsumo(sum.toFixed(2));
         setkilogramosC02(kgCO2.toFixed(2));
+
     };
 
     reader.readAsText(file);
@@ -186,13 +188,27 @@ export default function Dashboard() {
     reader.readAsText(file);
   }
 
+ 
+  const [currentSlide, setCurrentSlide] = useState(0); // Estado para almacenar el índice de la diapositiva actual
+
+  const textos = [
+    `${(kilogramosC02*100/4.17).toFixed(0)}% de lo que emite un coche promedio al día`,
+    `Eres responsable de ${(34.72*(porcentajeConsumo/100)).toFixed(0)}L de hielo derretidos cada 24h`,
+    `Son necesarios ${(kilogramosC02/0.027)} árboles para absorber lo que contaminas en un día`,
+    `Se necesitan ${(22780/kilogramosC02).toFixed(0)} como tú para igualar lo que es un día tranquilo en jet privado para Tailor Swift`,
+  ];
+
+  const handleSlideChange = (index) => {
+    setCurrentSlide(index); // Actualiza el estado del índice de la diapositiva actual cuando cambia el carrusel
+  };
+
   return (
     <main className="flex flex-col justify-between overflow-hidden">
 
-      <div className='flex bg-[#B1E0FC] pb-10 rounded-br-[50px] '>
+      <div className='flex bg-[#B1E0FC] pb-10 rounded-br-[50px] justify-left items-left'>
         <div className='items-center'>
             <Carousel
-              className='max-w-[50vw] items-center mx-auto'
+              className=' max-w-[50vw] items-center mx-auto'
               showArrows={false} // Oculta las flechas
               showStatus={false} // Oculta el estado de la página (ej., "1 of 3")
               showIndicators={false} // Oculta los indicadores de página
@@ -200,32 +216,30 @@ export default function Dashboard() {
               infiniteLoop={true} // Permite que el carrusel se repita infinitamente
               autoPlay={true} // Opcional: para que el carrusel reproduzca automáticamente
               interval={3800}
-
+              onChange={handleSlideChange}
               >
               <div>
                   <img src="/Carr.gif" className='mb-[-100px]'/>
-                  
-                  <p className='text-[20px] text-white mb-5 text-center font-sans font-bold max-w-[800px] mx-auto '>Coche</p>
               </div>
               <div>
                   <img src="/ice.gif" className='mb-[-100px]'/>
-
-                  <p className='text-[20px] text-white mb-5 text-center font-sans font-bold max-w-[800px] mx-auto '>Hielo</p>
-
               </div>
               <div>
                   <img src="/tree.gif" className='mb-[-100px]'/>
-                  <p className='text-[20px] text-white mb-5 text-center font-sans font-bold max-w-[800px] mx-auto '>arbol</p>
               </div>
               <div>
                   <img src="/plane.gif" className='mb-[-100px]'/>
-                  <p className='text-[20px] text-white mb-5 text-center font-sans font-bold max-w-[800px] mx-auto '>avión</p>
               </div>
           </Carousel>
         </div>
-        <div className='flex items-center mx-auto'>
+        <div className='flex items-center w-1/5 justify-bottom bg-lime-600 mb-[100px] ml-[50px] mr-[50px] rounded-b-[50px] drop-shadow-2xl'> 
+
+        <p className=" col-span-2 text-2xl text-left font-sans font-semibold m-10">{textos[currentSlide]}</p>
+        </div>
+        <div className='flex items-center max-w-40'>
           <div className='flex flex-col justify-center items-center h-full'>
-            <h2 className="text-[90px] text-white mb-5 text-center justify-center font-sans font-bold">
+            <h2 className={`text-[90px] text-white mb-5 text-center justify-center font-sans  font-bold ${porcentajeConsumo < 30 ? 'text-black' : porcentajeConsumo < 50 ? 'text-yellow-500' : porcentajeConsumo < 80 ? 'text-green-500' : porcentajeConsumo < 150 ? 'text-orange-500' : 'text-red-500'}`}>
+
               {porcentajeConsumo}%
             </h2>
             <p className='text-[20px] text-white mb-5 text-center font-sans font-semibold'>Consumes el {porcentajeConsumo}% de lo que consume una persona de media al día, esto supone {kilogramosC02} kg de CO2 diariamente</p>
@@ -246,7 +260,7 @@ export default function Dashboard() {
             </motion.div>
           ))}
           <div className="flex items-center py-auto mx-auto justify-center"> 
-            <p className="text-9xl text-center  move-up">👇</p>
+            <p className="text-9xl text-center  move-up">⚡</p>
           </div>      
         </div>
       </div>
