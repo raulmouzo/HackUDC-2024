@@ -2,7 +2,7 @@
 
 ![WattCheck_image](images/WattCheck-1.png)
 
-## Description
+## Descripción
 Nuestro proyecto para el HackUDC 2024 es una web online que sirve para visualizar
 de una forma sencilla, intuitiva y organizada una factura de la luz.
 
@@ -46,13 +46,13 @@ por tu bolsillo y por el futuro del planeta Tierra.
 5. Iniciar la aplicación son `npm run dev`.
 
 
-## License
+## Licencia
 This project is licensed under the [GNUL3 License](https://choosealicense.com/licenses/gpl-3.0/).
 
 ## Agradecimientos
 Nos gustaría dar las gracias a HackUDC 2024 por ofrecernos la oportunidad de desarrollar este proyecto y a los miembros de nuestro equipo por su duro trabajo y dedicación. Además, agradecemos el uso de bibliotecas o recursos de terceros en el desarrollo de WattCheck.
 
-## Galery
+## Galería
 
 ![WattCheck_image](images/WattCheck.png)
 
