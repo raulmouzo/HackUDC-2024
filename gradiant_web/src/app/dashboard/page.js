@@ -383,10 +383,18 @@ const colors2 = {
 
       </div>
 
-      <div className='flex gap-[20px] mx-10 flex-col'>
-        <h3 className='text-[30px] text-white font-sans font-semibold'>
-         Featured Daily Prices
-        </h3>   
+      <div className='flex gap-[20px] mx-10 flex-col '>
+        <div className='flex '>
+        <div className='bg-black rounded-full  mb-10 border-[5px] border-lime-200 w-[95%] mr-5'  style={{ boxShadow: '0 0 20px rgba(255, 255, 255, 0.5)' }}>
+        <h3 className='text-[30px] text-white font-sans font-bold ml-5 mt-1 mb-1'>
+          Featured Daily Prices
+        </h3> 
+        </div>
+        <div className='bg-black rounded-full border-[5px] border-lime-200 w-[5%] h-[64px] flex items-center py-auto mx-auto justify-center'  style={{ boxShadow: '0 0 20px rgba(255, 255, 255, 0.5)' }}>
+        <p className="text-2xl text-center">👇</p>
+
+        </div>
+        </div>
         <div className='flex justify-between'>
           <PriceCard price={lowestPrice} title="Lowest Price"/>
           <PriceCard price={highestPrice} title="Highest Price"/>
@@ -396,7 +404,7 @@ const colors2 = {
       </div>
 
 
-      <button id="download-excel" className="flex justify-center items-center mx-10 mt-5 border-white border-[1px] text-gray-800 hover:text-black  bg-transparent hover:bg-gray-100 dark:text-gray-100 px-4 py-5 rounded-md transition duration-300 z-10" onClick={handleDownloadExcel}>
+      <button id="download-excel" className="flex justify-center m-20 items-center mx-10 mt-25 border-white border-[1px] text-gray-800 hover:text-black  bg-transparent hover:bg-gray-100 dark:text-gray-100 px-4 py-5 rounded-md transition duration-300 z-10" onClick={handleDownloadExcel}>
           <h4 className=' font-sans font-semibold text-[20px]'>
             Download CSV as Excel
           </h4>
