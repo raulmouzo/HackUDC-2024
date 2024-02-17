@@ -24,13 +24,21 @@ export default function Home() {
           
           <a 
             href="/consumptions.csv"
-            download="NombreDelArchivo.csv"
             className="flex items-center gap-2 text-gray-800 bg-gray-200 dark:bg-gray-700 dark:text-gray-100 px-4 py-2 rounded-md shadow-md hover:shadow-lg transition duration-300 z-10"
             style={{ marginTop: '20px' }}
           >
             <FiDownload className="text-xl" />
-            Download CSV Example
+            Download CSV Example 1
           </a>
+          <a 
+            href="/consumptions2.csv"
+            className="flex items-center gap-2 text-gray-800 bg-gray-200 dark:bg-gray-700 dark:text-gray-100 px-4 py-2 rounded-md shadow-md hover:shadow-lg transition duration-300 z-10"
+            style={{ marginTop: '20px' }}
+          >
+            <FiDownload className="text-xl" />
+            Download CSV Example 2
+          </a>
+
 
           <a
             href="https://github.com/raulmouzo/HackUDC-2024"
