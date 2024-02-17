@@ -185,3 +185,19 @@ body {
   box-shadow: 0px -8px 20px rgba(0, 0, 0, 0.4);
 
 }
+
+@keyframes exitAnimation {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-10px);
+  }
+}
+.move-up {
+  transition: transform 0.3s ease;
+}
+
+.move-up:hover {
+  transform: translateY(-10px);
+}

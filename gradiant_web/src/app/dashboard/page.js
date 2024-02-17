@@ -109,7 +109,7 @@ export default function Dashboard() {
   return (
     <main className="flex flex-col justify-between overflow-hidden">
 
-      <div className='flex bg-[#B1E0FC] pb-10 '>
+      <div className='flex bg-[#B1E0FC] pb-10 rounded-br-[50px] '>
         <div className='items-center'>
             <Carousel
               className='max-w-[50vw] items-center mx-auto'
@@ -154,20 +154,32 @@ export default function Dashboard() {
 
       </div>
  
-      <div className='bg-[#B1E0FC] mb-10 '>
-      <div className='flex justify-between cap-10 bg-black rounded-t-[50px] drop-shadow '>
+      <div className='bg-[#B1E0FC] rounded-tr-[50px] mb-[-50px] '> 
+      <div className='flex justify-left bg-black rounded-t-[50px] drop-shadow  '> 
         <div className='ml-10 mt-10 ' >
         <Chart data={parsedData} name="Light Consumption"/>
         </div>
-        <div className='mt-10' >
+        <div className='mt-10 ml-10'  >
 
       <Chart data={parsedData} name="Light Price"/>
       </div>
-      <div className='mr-10 mt-10' >
+      <div className='mr-10 mt-10 ml-10' >
 
       <Chart data={parsedData} name="Your Light Price"/>
       </div>
+      <div className="flex justify-center items-center py-auto mx-auto justify-center"> 
+        <p class="text-9xl text-center  move-up">👇</p>    
+      </div>
          </div>
+
+
+        
+        
+</div>
+<div>
+
+
+
 </div>
 
         
