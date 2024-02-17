@@ -9,7 +9,8 @@ import { Carousel } from 'react-responsive-carousel';
 import { motion, AnimatePresence } from 'framer-motion';
 import PriceCard from '../components/PriceCard';
 
-
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 
 export default function Dashboard() {
   const router = useRouter();
@@ -19,6 +20,7 @@ export default function Dashboard() {
   const [cheapestPrice1, setCheapestPrice1] = useState(null);
   const [cheapestPrice2, setCheapestPrice2] = useState(null);
 
+  const [currentSlide, setCurrentSlide] = useState(0); 
   const [porcentajeConsumo, setporcentajeConsumo] = useState(null);
   const [kilogramosC02, setkilogramosC02] = useState(null);
   const [parsedData, setParsedData] = useState([]);
@@ -228,8 +230,7 @@ const colors2 = {
     reader.readAsText(file);
   }
 
- 
-  const [currentSlide, setCurrentSlide] = useState(0); // Estado para almacenar el índice de la diapositiva actual
+
 
   const textos = [
     `${(kilogramosC02 * 100 / 4.17).toFixed(0)}% of what an average car emits in a day`,
@@ -241,6 +242,24 @@ const colors2 = {
 
   const handleSlideChange = (index) => {
     setCurrentSlide(index); // Actualiza el estado del índice de la diapositiva actual cuando cambia el carrusel
+  };
+
+  const convertCSVToExcelAndDownload = (csvFile) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const workbook = XLSX.read(e.target.result, { type: 'binary' });
+      const wsname = workbook.SheetNames[0];
+      const ws = workbook.Sheets[wsname];
+      /* Opcional: Aquí puedes manipular ws si necesitas modificar el contenido antes de guardarlo */
+      const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+      const data = new Blob([excelBuffer], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'});
+      saveAs(data, 'archivoConvertido.xlsx');
+    };
+    reader.readAsBinaryString(csvFile);
+  };
+
+  const handleDownloadExcel = () => {
+    convertCSVToExcelAndDownload(file);
   };
 
   return (
@@ -376,6 +395,12 @@ const colors2 = {
         </div>
       </div>
 
+
+      <button id="download-excel" className="flex justify-center items-center mx-10 mt-5 border-white border-[1px] text-gray-800 hover:text-black  bg-transparent hover:bg-gray-100 dark:text-gray-100 px-4 py-5 rounded-md transition duration-300 z-10" onClick={handleDownloadExcel}>
+          <h4 className=' font-sans font-semibold text-[20px]'>
+            Download CSV as Excel
+          </h4>
+      </button>
       <footer className='flex justify-center items-center bg-black rounded-b-[50px] py-10'>
         <p className='text-white font-bold'>Thanks for your time &lt;3</p>
       </footer>
