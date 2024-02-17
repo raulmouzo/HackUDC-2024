@@ -29,6 +29,7 @@ export const DragAndDrop = () => {
 			onChange={handleFileChange}
 			className='h-[40vh]'
 			color='white'
+			accept='text/csv'
 		/>
     );
 }
