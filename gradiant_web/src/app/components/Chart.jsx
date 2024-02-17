@@ -8,8 +8,8 @@ export const Chart = () => {
     if (chartContainerRef.current) {
       // Crea el gráfico dentro del elemento referenciado.
       const chart = createChart(chartContainerRef.current, {
-        width: 750,
-        height: 400,
+        width: 550,
+        height: 200,
         layout: { textColor: 'white', background: { type: 'solid', color: 'black' }},
         grid: {
         vertLines: {
@@ -86,7 +86,7 @@ export const Chart = () => {
   }, []);
 
   return (
-    <div className=' bg-black border-[1px] rounded-[15px] py-5 px-10 font-semibold'>
+    <div className=' bg-black border-[1px] rounded-[15px] py-5 px-10 font-semibold w-[600px]'>
         <h2 className="text-[36px] text-white mb-5">
             Light Price
         </h2>
