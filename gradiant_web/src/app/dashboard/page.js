@@ -16,7 +16,8 @@ export default function Dashboard() {
   const { file, setFile } = useFile();
   const [lowestPrice, setlowestPrice] = useState(null);
   const [highestPrice, sethighestPrice] = useState(null);
-  const [cheapestPrice, setCheapestPrice] = useState(null);
+  const [cheapestPrice1, setCheapestPrice1] = useState(null);
+  const [cheapestPrice2, setCheapestPrice2] = useState(null);
 
   const [porcentajeConsumo, setporcentajeConsumo] = useState(null);
   const [kilogramosC02, setkilogramosC02] = useState(null);
@@ -94,11 +95,22 @@ const colors2 = {
       }
     };
 
-    const fetchCheapesttPrice = async () => {
+    const fetchCheapestPrice1 = async () => {
       try {
-        const response = await fetch('http://localhost:4000/api/prices/cheapests?n=2');
+        const response = await fetch('http://localhost:4000/api/prices/cheapests1');
         const data = await response.json();
-        setCheapestPrice(data);
+        setCheapestPrice1(data);
+        console.log("AAAA", data);
+      } catch (error) {
+        console.error("Error al recuperar los datos:", error);
+      }
+    };
+
+    const fetchCheapestPrice2 = async () => {
+      try {
+        const response = await fetch('http://localhost:4000/api/prices/cheapests2');
+        const data = await response.json();
+        setCheapestPrice2(data);
       } catch (error) {
         console.error("Error al recuperar los datos:", error);
       }
@@ -106,7 +118,8 @@ const colors2 = {
   
     fetchLowestPrice();
     fetchHighestPrice();
-    fetchCheapesttPrice();
+    fetchCheapestPrice1();
+    fetchCheapestPrice2();
     
 
     procesarCSV(file);
@@ -337,8 +350,8 @@ const colors2 = {
         <div className='flex justify-between'>
           <PriceCard price={lowestPrice} title="Lowest Price"/>
           <PriceCard price={highestPrice} title="Highest Price"/>
-          <PriceCard price={cheapestPrice} title="Chepest Price 1"/>
-          <PriceCard price={cheapestPrice} title="Cheapest Price 2"/>
+          <PriceCard price={cheapestPrice1} title="Chepest Price 1"/>
+          <PriceCard price={cheapestPrice2} title="Cheapest Price 2"/>
         </div>
       </div>
 

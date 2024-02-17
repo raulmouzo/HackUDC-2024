@@ -88,4 +88,24 @@ app.get('/api/prices/cheapests', async (req, res) => {
   }
 });
 
+app.get('/api/prices/cheapests1', async (req, res) => {
+
+  try {
+    const data = await fetchAPI(`http://localhost:5000/api/prices/cheapest1`);
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: 'Error fetching cheapest prices data' });
+  }
+});
+
+app.get('/api/prices/cheapests2', async (req, res) => {
+
+  try {
+    const data = await fetchAPI(`http://localhost:5000/api/prices/cheapest2`);
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: 'Error fetching cheapest prices data' });
+  }
+});
+
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));

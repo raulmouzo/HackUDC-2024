@@ -36,10 +36,9 @@ app.get('/api/prices/max', (req, res) => {
   res.json(maxPriceData);
 });
 
-app.get('/api/prices/cheapests', (req, res) => {
+app.get('/api/prices/cheapest1', (req, res) => {
   // Datos de ejemplo para los precios más baratos
-  const cheapestPricesData = [
-    {
+  const cheapestPricesData1 =  {
       "date": "17-02-2024",
       "hour": "15-16",
       "is-cheap": true,
@@ -47,18 +46,22 @@ app.get('/api/prices/cheapests', (req, res) => {
       "market": "PVPC",
       "price": 67.62,
       "units": "€/MWh"
-    },
-    {
-      "date": "17-02-2024",
-      "hour": "14-15",
-      "is-cheap": true,
-      "is-under-avg": true,
-      "market": "PVPC",
-      "price": 68.97,
-      "units": "€/MWh"
-    }
-  ];
-  res.json(cheapestPricesData);
+    };
+  res.json(cheapestPricesData1);
 });
+
+app.get('/api/prices/cheapest2', (req, res) => {
+    // Datos de ejemplo para los precios más baratos
+    const cheapestPricesData2 =  {
+        "date": "17-02-2024",
+        "hour": "14-15",
+        "is-cheap": true,
+        "is-under-avg": true,
+        "market": "PVPC",
+        "price": 68.97,
+        "units": "€/MWh"
+        }
+    res.json(cheapestPricesData2);
+  });
 
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
