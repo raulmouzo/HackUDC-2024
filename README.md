@@ -51,7 +51,7 @@ por tu bolsillo y por el futuro del planeta Tierra.
 
 
 ## License
-This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
+This project is licensed under the [GNUL3 License](https://choosealicense.com/licenses/gpl-3.0/).
 
 ## Agradecimientos
 Nos gustaría dar las gracias a HackUDC 2024 por ofrecernos la oportunidad de desarrollar este proyecto y a los miembros de nuestro equipo por su duro trabajo y dedicación. Además, agradecemos el uso de bibliotecas o recursos de terceros en el desarrollo de WattCheck.
