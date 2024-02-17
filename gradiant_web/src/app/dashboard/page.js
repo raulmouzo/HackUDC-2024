@@ -232,11 +232,12 @@ const colors2 = {
   const [currentSlide, setCurrentSlide] = useState(0); // Estado para almacenar el índice de la diapositiva actual
 
   const textos = [
-    `${(kilogramosC02*100/4.17).toFixed(0)}% de lo que emite un coche promedio al día`,
-    `Eres responsable de ${(34.72*(porcentajeConsumo/100)).toFixed(0)}L de hielo derretidos cada 24h`,
-    `Son necesarios ${(kilogramosC02/0.027)} árboles para absorber lo que contaminas en un día`,
-    `Se necesitan ${(22780/kilogramosC02).toFixed(0)} como tú para igualar lo que es un día tranquilo en jet privado para Tailor Swift`,
+    `${(kilogramosC02 * 100 / 4.17).toFixed(0)}% of what an average car emits in a day`,
+    `You're responsible for melting ${(34.72 * (porcentajeConsumo / 100)).toFixed(0)} liters of ice every 24 hours`,
+    `It takes ${(kilogramosC02 / 0.027).toFixed(0)} trees to absorb what you pollute in a day`,
+    `It would take ${(22780 / kilogramosC02).toFixed(0)} people like you to match a quiet day on a private jet for Taylor Swift`,
   ];
+
 
   const handleSlideChange = (index) => {
     setCurrentSlide(index); // Actualiza el estado del índice de la diapositiva actual cuando cambia el carrusel
@@ -375,9 +376,9 @@ const colors2 = {
         </div>
       </div>
 
-      <div className='flex justify-center items-center bg-black rounded-b-[50px] py-10'>
+      <footer className='flex justify-center items-center bg-black rounded-b-[50px] py-10'>
         <p className='text-white font-bold'>Thanks for your time &lt;3</p>
-      </div>
+      </footer>
 
     </main>
   );
