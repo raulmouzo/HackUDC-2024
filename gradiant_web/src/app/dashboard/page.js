@@ -16,6 +16,8 @@ export default function Dashboard() {
   const [porcentajeConsumo, setporcentajeConsumo] = useState(null);
   const [kilogramosC02, setkilogramosC02] = useState(null);
   const [parsedData, setParsedData] = useState([]);
+  const [parsedData2, setParsedData2] = useState([]);
+  const precios = [0.09151, 0.09402, 0.09571, 0.09494, 0.09517, 0.09438, 0.09343, 0.09265, 0.08963, 0.08415, 0.07765, 0.07165, 0.0693, 0.06982, 0.06897, 0.06762, 0.07298, 0.08434, 0.10751, 0.12783, 0.11863, 0.11465, 0.1134, 0.11604];
 
   useEffect(() => {
     if (file === null){
@@ -36,7 +38,7 @@ export default function Dashboard() {
     fetchPriceData();
     procesarCSV(file);
     ParsearCSVGráficas(file, setParsedData);
-    console.log(parsedData);
+    ParsearCSVGráficasPrecio(file, setParsedData2);
   }, []); 
 
   const procesarCSV = (file) => {
@@ -105,6 +107,38 @@ export default function Dashboard() {
     reader.readAsText(file);
   }
 
+  const ParsearCSVGráficasPrecio = (file, setParsedData) => {
+    const reader = new FileReader();
+
+    reader.onload = function(event) {
+        const content = event.target.result;
+        const lines = content.split('\n');
+        const data = [];
+
+        lines.forEach((line, index) => {
+            if (index === 0) return;
+
+            const cells = line.split(';');
+            const fecha = cells[1]; // "dd/mm/yyyy"
+            let hora = parseInt(cells[2], 10); // Hora como número
+            const consumo = parseFloat(cells[3].replace(',', '.')) * precios[index]; // Convertir el consumo
+
+            const horaFormateada = hora < 10 ? `0${hora}:00` : `${hora}:00`;
+
+            const fechaISO = fecha.split('/').reverse().join('-') + ' ' + horaFormateada;
+
+            // Convertir a tiempo UNIX en segundos
+            const time = Date.parse(fechaISO) / 1000;
+
+            if (!isNaN(consumo) && !isNaN(time)) {
+                data.push({ time, value: consumo });
+            }
+        });
+        setParsedData2(data);
+    };
+    reader.readAsText(file);
+  }
+
 
   return (
     <main className="flex flex-col justify-between overflow-hidden">
@@ -155,40 +189,26 @@ export default function Dashboard() {
       </div>
  
       <div className='bg-[#B1E0FC] rounded-tr-[50px] mb-[-50px] '> 
-      <div className='flex justify-left bg-black rounded-t-[50px] drop-shadow  '> 
-        <div className='ml-10 mt-10 ' >
-        <Chart data={parsedData} name="Light Consumption"/>
+        <div className='flex justify-left bg-black rounded-t-[50px] drop-shadow  '> 
+          <div className='ml-10 mt-10 ' >
+            <Chart data={parsedData} name="Light Consumption"/>
+          </div>
+          <div className='mt-10 ml-10'  >
+            <Chart data={parsedData} name="Light Price"/>
+          </div>
+          <div className='mr-10 mt-10 ml-10' >
+            <Chart data={parsedData} name="Your Light Price"/>
+          </div>
+          <div className="flex items-center py-auto mx-auto justify-center"> 
+            <p class="text-9xl text-center  move-up">👇</p>    
+          </div>
         </div>
-        <div className='mt-10 ml-10'  >
-
-      <Chart data={parsedData} name="Light Price"/>
       </div>
-      <div className='mr-10 mt-10 ml-10' >
+      <div>
 
-      <Chart data={parsedData} name="Your Light Price"/>
+
+
       </div>
-      <div className="flex justify-center items-center py-auto mx-auto justify-center"> 
-        <p class="text-9xl text-center  move-up">👇</p>    
-      </div>
-         </div>
-
-
-        
-        
-</div>
-<div>
-
-
-
-</div>
-
-        
-      {priceData && (
-        <div>
-          <p>Precio mínimo: {priceData.price} {priceData.currency}</p>
-          <p>Fecha y hora: {priceData.date}</p>
-        </div>
-      )}
     </main>
   );
 }
