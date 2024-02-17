@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "WattCheck",
-  description: "WattCheck: Unveil Insights from Your Power Data en español",
+  description: "WattCheck: Unveil Insights from Your Power Data",
 };
 
 export default function RootLayout({ children }) {
