@@ -1,5 +1,6 @@
 'use client';
 
+import { Chart } from "@/components/Chart";
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
       <h2 className="text-2xl text-white text-center mb-10">
         Welcome to the dashboard! 🎉
       </h2>
+      <Chart />
     </main>
   );
 }
