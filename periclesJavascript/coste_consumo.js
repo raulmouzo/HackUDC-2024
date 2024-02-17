@@ -1,46 +1,37 @@
-// Función para obtener el precio de una hora específica a través de una API
-function obtenerPrecioDesdeAPI(hora) {
-    // URL de la API que proporciona los datos de los precios
-    const apiUrl = 'https://api.example.com/precios';
+function procesarCSV() {
+    const fileInput = document.getElementById('csvFileInput');
+    const file = fileInput.files[0];
+    const reader = new FileReader();
 
-    // Realizar la llamada a la API usando fetch
-    return fetch(apiUrl)
-        .then(response => {
-            // Verificar si la respuesta es exitosa (código de estado 200)
-            if (!response.ok) {
-                throw new Error('No se pudo obtener la respuesta de la API.');
-            }
-            // Parsear la respuesta como JSON
-            return response.json();
-        })
-        .then(data => {
-            // Verificar si la hora está presente en los datos recibidos
-            if (data.hasOwnProperty(hora)) {
-                return data[hora].price;
-            } else {
-                throw new Error('No se encontró el precio para la hora especificada.');
-            }
-        })
-        .catch(error => {
-            // Manejar cualquier error que pueda ocurrir durante la llamada a la API
-            console.error('Error al obtener el precio desde la API:', error);
-            return null; // Retornar null en caso de error
-        });
-}
+    reader.onload = function(event) {
+      const content = event.target.result;
+      const lines = content.split('\n');
+      let sum = 0;
+      let kgCO2 = 0;
+      let kgCO2MediaDia = 14;
 
-// Función para mostrar el precio en pantalla
-function mostrarPrecio(precio) {
-    const resultadoElemento = document.getElementById('result');
-    if (precio !== null) {
-        resultadoElemento.textContent = `El precio para la hora seleccionada es: ${precio} €/MWh`;
-    } else {
-        resultadoElemento.textContent = 'No se pudo obtener el precio desde la API.';
-    }
-}
+      lines.forEach((line, index) => {
+        // Ignorar la primera línea si contiene encabezados
+        if (index === 0) return;
 
-// Ejemplo de uso
-const horaElegida = "00-01"; // Puedes cambiar esta hora según tus necesidades
-obtenerPrecioDesdeAPI(horaElegida)
-    .then(precio => {
-        mostrarPrecio(precio);
-    });
+        const cells = line.split(';');
+        const value = parseFloat(cells[3].replace(',', '.')); // Tomar el valor de la columna 4
+        if (!isNaN(value)) {
+          sum += value;
+        }
+      });
+
+      sum /= 3;
+      kgCO2 = sum * kgCO2MediaDia;
+
+      sum = sum * 100;
+
+      const outputDiv = document.getElementById('output');
+      outputDiv.innerHTML = `Consumes el ${sum.toFixed(2)}% de lo que consume una persona de media al día, esto supone el ${kgCO2.toFixed(2)}kg de CO2 diariamente`;
+      
+      const additionalInfoDiv = document.getElementById('additionalInfo');
+      additionalInfoDiv.textContent = `Este CO2 supone blablabla para el planeta.`;    
+    };
+
+    reader.readAsText(file);
+  }
