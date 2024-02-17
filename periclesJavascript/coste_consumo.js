@@ -21,7 +21,8 @@ function procesarCSV() {
         }
       });
 
-      sum /= 3;
+      sum /= 9;
+      
       kgCO2 = sum * kgCO2MediaDia;
 
       sum = sum * 100;
