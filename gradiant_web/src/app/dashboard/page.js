@@ -7,7 +7,6 @@ import  { useRouter } from 'next/navigation';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
 import { motion, AnimatePresence } from 'framer-motion';
-import LowestPriceCard from '../components/PriceCard';
 import PriceCard from '../components/PriceCard';
 
 
@@ -80,7 +79,6 @@ const colors2 = {
         const response = await fetch('http://localhost:4000/api/prices/min');
         const data = await response.json();
         setlowestPrice(data);
-        console.log(data);
       } catch (error) {
         console.error("Error al recuperar los datos:", error);
       }
@@ -91,7 +89,6 @@ const colors2 = {
         const response = await fetch('http://localhost:4000/api/prices/max');
         const data = await response.json();
         sethighestPrice(data);
-        console.log(data);
       } catch (error) {
         console.error("Error al recuperar los datos:", error);
       }
@@ -102,7 +99,6 @@ const colors2 = {
         const response = await fetch('http://localhost:4000/api/prices/cheapests?n=2');
         const data = await response.json();
         setCheapestPrice(data);
-        console.log(data);
       } catch (error) {
         console.error("Error al recuperar los datos:", error);
       }
@@ -111,7 +107,6 @@ const colors2 = {
     fetchLowestPrice();
     fetchHighestPrice();
     fetchCheapesttPrice();
-    console.log(cheapestPrice);
     
 
     procesarCSV(file);
@@ -342,8 +337,8 @@ const colors2 = {
         <div className='flex justify-between'>
           <PriceCard price={lowestPrice} title="Lowest Price"/>
           <PriceCard price={highestPrice} title="Highest Price"/>
-          <PriceCard price={cheapestPrice[0]} title="Chepest Price 1"/>
-          <PriceCard price={cheapestPrice[1]} title="Cheapest Price 2"/>
+          <PriceCard price={cheapestPrice} title="Chepest Price 1"/>
+          <PriceCard price={cheapestPrice} title="Cheapest Price 2"/>
         </div>
       </div>
 
