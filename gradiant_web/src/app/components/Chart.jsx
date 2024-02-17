@@ -6,6 +6,7 @@ export const Chart = props => {
 		data,
 		name,
 		selectedId,
+		subtitle,
 		colors: {
 			backgroundColor = 'black',
 			lineColor = '#2962FF',
@@ -74,6 +75,7 @@ export const Chart = props => {
         <h2 className="text-[36px] text-white mb-5">
             {name}
         </h2>
+		<p class="text-white/[.5] text-[20px]">{subtitle}</p>
         <div ref={chartContainerRef} />
     </div>
   );

@@ -298,10 +298,10 @@ const colors2 = {
         </div>
         <div className='flex items-center max-w-40'>
           <div className='flex flex-col justify-center items-center h-full'>
-            <h2 className={`text-[90px] text-white mb-5 text-center justify-center font-sans  font-bold ${porcentajeConsumo < 30 ? 'text-white' : porcentajeConsumo < 50 ? 'text-yellow-500' : porcentajeConsumo < 80 ? 'text-green-600' : porcentajeConsumo < 150 ? 'text-orange-700' : 'text-red-700'}`}>
+            <h2 className={`text-[90px]  mb-5 text-center justify-center font-sans  font-bold ${porcentajeConsumo < 30 ? 'text-white' : porcentajeConsumo < 50 ? 'text-yellow-500' : porcentajeConsumo < 80 ? 'text-green-600' : porcentajeConsumo < 150 ? 'text-orange-700' : 'text-red-700'}`}>
               {porcentajeConsumo}%
             </h2>
-            <p className='text-[20px] text-white mb-5 text-center font-sans font-semibold'>You consume {porcentajeConsumo}% of what a person consumes on average per day, that is {kilogramosC02} kg of CO2 per day.</p>
+            <p className='text-[20px] mb-5 text-center font-sans font-semibold'>You consume {porcentajeConsumo}% of what a person consumes on average per day, that is {kilogramosC02} kg of CO2 per day.</p>
           </div>
         </div>
 
@@ -310,12 +310,12 @@ const colors2 = {
       <div className='bg-[#B1E0FC] rounded-tr-[50px] mb-[50px] '> 
         <div className='flex justify-left bg-black rounded-t-[50px] drop-shadow'>
           {[
-            { id: 'lightConsumption', data: parsedData, name: "Light Consumption" },
-            { id: 'lightPrice', data: prices, name: "Light Price", colors: colors1  },
-            { id: 'yourLightPrice', data: parsedData2, name: "Your Light Price", colors: colors2}
+            { id: 'lightConsumption', data: parsedData, name: "Light Consumption", subtitle: "h | kWh"},
+            { id: 'lightPrice', data: prices, name: "Light Price", colors: colors1,  subtitle: "h | €/kWh"},
+            { id: 'yourLightPrice', data: parsedData2, name: "Your Light Price", colors: colors2, subtitle: "h | h * €/kWh"}
           ].map(chart => (
             <motion.div key={chart.id} layoutId={chart.id} onClick={() => setSelectedId(chart.id)} className='ml-10 mt-10'>
-              <Chart data={chart.data} name={chart.name} colors={chart.colors}/>
+              <Chart data={chart.data} name={chart.name} colors={chart.colors} subtitle={chart.subtitle}/>
             </motion.div>
           ))}
           <div className="flex items-center py-auto mx-auto justify-center"> 
@@ -349,9 +349,9 @@ const colors2 = {
               onClick={(e) => e.stopPropagation()} // Previene el cierre al hacer clic dentro
             >
               {/* Renderiza la gráfica seleccionada a gran escala */}
-              {selectedId === 'lightConsumption' && <Chart data={parsedData} name="Light Consumption" selectedId={selectedId}/>}
-              {selectedId === 'lightPrice' && <Chart data={prices} name="Light Price" selectedId={selectedId} colors={colors1}/>}
-              {selectedId === 'yourLightPrice' && <Chart data={parsedData2} name="Your Light Price" selectedId={selectedId} colors={colors2}/>}
+              {selectedId === 'lightConsumption' && <Chart data={parsedData} name="Light Consumption" selectedId={selectedId} subtitle="h | kWh"/>}
+              {selectedId === 'lightPrice' && <Chart data={prices} name="Light Price" selectedId={selectedId} colors={colors1} subtitle="h | €/kWh"/>}
+              {selectedId === 'yourLightPrice' && <Chart data={parsedData2} name="Your Light Price" selectedId={selectedId} colors={colors2} subtitle="h | h * €/kWh"/>}
               
               {/* Opcional: Botón de cierre */}
               <motion.button 
