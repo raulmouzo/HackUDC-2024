@@ -4,6 +4,9 @@ import { useEffect, useState } from 'react';
 import { Chart } from "@/app/components/Chart";
 import { useFile } from '../context/csvContex';
 import  { useRouter } from 'next/navigation';
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import { Carousel } from 'react-responsive-carousel';
+
 
 export default function Dashboard() {
   const router = useRouter();
@@ -74,18 +77,39 @@ export default function Dashboard() {
   return (
     <main className="flex flex-col justify-between">
 
-      <div className='flex bg-[#8DE1FD] mb-3'>
+      <div className='flex bg-[#B1E0FC] mb-3 pb-10'>
         <div className='items-center'>
-          <img src="/image.jpg" alt="Descripción de la imagen" className=" h-[500px]" />
-          <h2 className="text-[24px] text-white mb-5 text-center font-sans font-semibold max-w-[800px] mx-auto">
-            Consumes el {porcentajeConsumo}% de lo que consume una persona de media al día, esto supone {kilogramosC02} kg de CO2 diariamente
-          </h2>
+            <Carousel
+              className='max-w-[50vw] items-center mx-auto'
+              showArrows={false} // Oculta las flechas
+              showStatus={false} // Oculta el estado de la página (ej., "1 of 3")
+              showIndicators={false} // Oculta los indicadores de página
+              showThumbs={false} // Oculta las miniaturas (thumbnails) de las imágenes
+              infiniteLoop={true} // Permite que el carrusel se repita infinitamente
+              autoPlay={false} // Opcional: para que el carrusel reproduzca automáticamente
+              interval={5000}
+
+              >
+              <div>
+                  <img src="/car.gif" className='mb-[-100px]'/>
+                  <p className='text-[20px] text-white mb-5 text-center font-sans font-semibold max-w-[800px] mx-auto '>frase realcionada con la imagen</p>
+              </div>
+              <div>
+                  <img src="/car.gif" className='mb-[-100px]'/>
+                  <p className='text-[20px] text-white mb-5 text-center font-sans font-semibold max-w-[800px] mx-auto '>frase realcionada con la imagen</p>
+              </div>0
+              <div>
+                  <img src="/car.gif" className='mb-[-100px]'/>
+                  <p className='text-[20px] text-white mb-5 text-center font-sans font-semibold max-w-[800px] mx-auto '>frase realcionada con la imagen</p>
+              </div>
+          </Carousel>
         </div>
         <div className='flex items-center mx-auto'>
           <div className='flex flex-col justify-center items-center h-full'>
             <h2 className="text-[90px] text-white mb-5 text-center justify-center font-sans font-bold">
               {porcentajeConsumo}%
             </h2>
+            <p className='text-[20px] text-white mb-5 text-center font-sans font-semibold'>Consumes el {porcentajeConsumo}% de lo que consume una persona de media al día, esto supone {kilogramosC02} kg de CO2 diariamente</p>
           </div>
         </div>
 
