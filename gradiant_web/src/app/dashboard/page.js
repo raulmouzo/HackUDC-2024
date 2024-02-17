@@ -87,9 +87,9 @@ export default function Dashboard() {
   }
 
   return (
-    <main className="flex flex-col justify-between">
+    <main className="flex flex-col justify-between overflow-hidden">
 
-      <div className='flex bg-[#B1E0FC] mb-3 pb-10'>
+      <div className='flex bg-[#B1E0FC] pb-10'>
         <div className='items-center'>
             <Carousel
               className='max-w-[50vw] items-center mx-auto'
@@ -130,7 +130,8 @@ export default function Dashboard() {
         </div>
 
       </div>
-      
+      <div class="wave"></div>
+ 
 
       <div className='flex justify-between mx-5 cap-10'>
         <Chart data={data} />

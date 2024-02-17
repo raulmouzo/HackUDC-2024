@@ -146,3 +146,36 @@ body {
 .dark .jumbo::after {
     background-image: var(--stripesDark), var(--rainbow);
 }
+
+/* SEPARADOR WAVE */
+
+.wave {
+  position: relative;
+  height: 100px;
+  width: 100%;
+  background: #B1E0FC;
+  bottom: 0;
+  margin-bottom: 70px;
+}
+
+.wave::before, .wave::after {
+  content: "";
+  display: block;
+  position: absolute;
+  border-radius: 100% 50%;
+}
+
+.wave::before {
+  width: 55%;
+  height: 109%;
+  background-color: #000000;
+  right: -1.5%;
+  top: 60%;
+}
+.wave::after {
+  width: 55%;
+  height: 100%;
+  background-color: #B1E0FC ;
+  left: -1.5%;
+  top: 40%;
+}
