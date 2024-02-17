@@ -1,4 +1,3 @@
-// Función para procesar el archivo CSV cargado
 function handleFileSelect(event) {
     const file = event.target.files[0];
     const reader = new FileReader();

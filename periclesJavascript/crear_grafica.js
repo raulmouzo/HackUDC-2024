@@ -1,4 +1,3 @@
-// Función para leer el archivo CSV y crear la gráfica
 function readCSVAndCreateChart() {
     fetch('consumptions.csv')
         .then(response => response.text())
@@ -17,37 +16,25 @@ function readCSVAndCreateChart() {
                 consumos.push(consumo);
             });
 
-            // Encontrar el punto de mayor consumo
-            const maxConsumoIndex = consumos.indexOf(Math.max(...consumos));
-            const horaMaxConsumo = horas[maxConsumoIndex];
-            const maxConsumo = consumos[maxConsumoIndex];
-
-            // Crear la gráfica
-            console.log("Creando gráfica...");
-            createChart(horas, consumos, horaMaxConsumo, maxConsumo);
+            createChart(horas, consumos);
         });
 }
 
 // Función para crear la gráfica utilizando Chart.js
-function createChart(horas, consumos, horaMaxConsumo, maxConsumo) {
-    // Obtener el contenedor para la gráfica
+function createChart(horas, consumos) {
     var contenedorGrafica = document.getElementById('graficaContainer');
-    
-    // Configurar el tamaño del contenedor
-    contenedorGrafica.style.width = '100%';
-    contenedorGrafica.style.height = '100%';
-    
-    // Crear el canvas dentro del contenedor
+
+    // Crear un nuevo canvas
     var canvas = document.createElement('canvas');
     contenedorGrafica.appendChild(canvas);
-    
-    // Configurar el tamaño del canvas para que llene el contenedor
-    canvas.width = contenedorGrafica.offsetWidth;
-    canvas.height = contenedorGrafica.offsetHeight;
-    
+
     // Obtener el contexto del canvas
     var ctx = canvas.getContext('2d');
-    
+
+    // Configurar el tamaño del canvas para que coincida con el contenedor
+    canvas.width = contenedorGrafica.offsetWidth;
+    canvas.height = contenedorGrafica.offsetHeight;
+
     // Crear la gráfica
     var myChart = new Chart(ctx, {
         type: 'line',
@@ -68,20 +55,11 @@ function createChart(horas, consumos, horaMaxConsumo, maxConsumo) {
                         display: true,
                         labelString: 'Consumo (kW)'
                     }
-                }]
-            },
-            annotation: {
-                annotations: [{
-                    type: 'line',
-                    mode: 'vertical',
-                    scaleID: 'x-axis-0',
-                    value: horaMaxConsumo,
-                    borderColor: 'green',
-                    borderWidth: 2,
-                    label: {
-                        content: `Hora de máximo consumo: ${horaMaxConsumo} (${maxConsumo} kW)`,
-                        enabled: true,
-                        position: 'top'
+                }],
+                xAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Horas'
                     }
                 }]
             }
@@ -89,5 +67,4 @@ function createChart(horas, consumos, horaMaxConsumo, maxConsumo) {
     });
 }
 
-// Llamar a la función para leer el archivo CSV y crear la gráfica
 readCSVAndCreateChart();
