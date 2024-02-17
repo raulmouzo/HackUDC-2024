@@ -76,6 +76,7 @@ export default function Dashboard() {
         </div>
 
       </div>
+      
 
       <div className='flex justify-between mx-5'>
         <Chart />
