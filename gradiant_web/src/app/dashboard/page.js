@@ -7,6 +7,8 @@ import  { useRouter } from 'next/navigation';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
 import { motion, AnimatePresence } from 'framer-motion';
+import LowestPriceCard from '../components/PriceCard';
+import PriceCard from '../components/PriceCard';
 
 
 
@@ -14,6 +16,8 @@ export default function Dashboard() {
   const router = useRouter();
   const { file, setFile } = useFile();
   const [lowestPrice, setlowestPrice] = useState(null);
+  const [highestPrice, sethighestPrice] = useState(null);
+  const [cheapestPrice, setCheapestPrice] = useState(null);
 
   const [porcentajeConsumo, setporcentajeConsumo] = useState(null);
   const [kilogramosC02, setkilogramosC02] = useState(null);
@@ -81,8 +85,33 @@ const colors2 = {
         console.error("Error al recuperar los datos:", error);
       }
     };
+
+    const fetchHighestPrice = async () => {
+      try {
+        const response = await fetch('http://localhost:4000/api/prices/max');
+        const data = await response.json();
+        sethighestPrice(data);
+        console.log(data);
+      } catch (error) {
+        console.error("Error al recuperar los datos:", error);
+      }
+    };
+
+    const fetchCheapesttPrice = async () => {
+      try {
+        const response = await fetch('http://localhost:4000/api/prices/cheapests?n=2');
+        const data = await response.json();
+        setCheapestPrice(data);
+        console.log(data);
+      } catch (error) {
+        console.error("Error al recuperar los datos:", error);
+      }
+    };
   
     fetchLowestPrice();
+    fetchHighestPrice();
+    fetchCheapesttPrice();
+    console.log(cheapestPrice);
     
 
     procesarCSV(file);
@@ -207,22 +236,15 @@ const colors2 = {
               >
               <div>
                   <img src="/Carr.gif" className='mb-[-100px]'/>
-                  
-                  <p className='text-[20px] text-white mb-5 text-center font-sans font-bold max-w-[800px] mx-auto '>Coche</p>
               </div>
               <div>
                   <img src="/ice.gif" className='mb-[-100px]'/>
-
-                  <p className='text-[20px] text-white mb-5 text-center font-sans font-bold max-w-[800px] mx-auto '>Hielo</p>
-
               </div>
               <div>
                   <img src="/tree.gif" className='mb-[-100px]'/>
-                  <p className='text-[20px] text-white mb-5 text-center font-sans font-bold max-w-[800px] mx-auto '>arbol</p>
               </div>
               <div>
                   <img src="/plane.gif" className='mb-[-100px]'/>
-                  <p className='text-[20px] text-white mb-5 text-center font-sans font-bold max-w-[800px] mx-auto '>avión</p>
               </div>
           </Carousel>
         </div>
@@ -231,7 +253,7 @@ const colors2 = {
             <h2 className="text-[90px] text-white mb-5 text-center justify-center font-sans font-bold">
               {porcentajeConsumo}%
             </h2>
-            <p className='text-[20px] text-white mb-5 text-center font-sans font-semibold'>Consumes el {porcentajeConsumo}% de lo que consume una persona de media al día, esto supone {kilogramosC02} kg de CO2 diariamente</p>
+            <p className='text-[20px] text-white mb-5 text-center font-sans font-semibold'>You consume {porcentajeConsumo}% of what a person consumes on average per day, that is {kilogramosC02} kg of CO2 per day.</p>
           </div>
         </div>
 
@@ -315,21 +337,18 @@ const colors2 = {
 
       <div className='flex gap-[20px] mx-10 flex-col'>
         <h3 className='text-[30px] text-white font-sans font-semibold'>
-          Precios diarios destacados:
+         Featured Daily Prices
         </h3>   
-          <div className='border-white border-2 rounded-lg h-[100px] w-[250px]'>
-              <h3 className='text-[20px] font-sans font-semibold mx-3'>
-                  Precio mas bajo 
-              </h3>
-              <p className=' text-[30px] text-white font-sans font-semibold mx-3 mt-1'>
-                {lowestPrice?.price} €/kWh
-              </p>
-          </div>
+        <div className='flex justify-between'>
+          <PriceCard price={lowestPrice} title="Lowest Price"/>
+          <PriceCard price={highestPrice} title="Highest Price"/>
+          <PriceCard price={cheapestPrice[0]} title="Chepest Price 1"/>
+          <PriceCard price={cheapestPrice[1]} title="Cheapest Price 2"/>
+        </div>
       </div>
-      
 
       <div className='flex justify-center items-center bg-black rounded-b-[50px] py-10'>
-        <p className='text-white font-bold'>Gracias por probarlo &lt;3</p>
+        <p className='text-white font-bold'>Thanks for your time &lt;3</p>
       </div>
 
     </main>
