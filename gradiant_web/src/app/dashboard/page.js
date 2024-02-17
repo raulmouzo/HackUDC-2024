@@ -188,9 +188,9 @@ export default function Dashboard() {
 
       </div>
  
-      <div className='bg-[#B1E0FC] rounded-tr-[50px] mb-[-50px] '> 
+      <div className='bg-[#B1E0FC] rounded-tr-[50px] mb-[50px] '> 
         <div className='flex justify-left bg-black rounded-t-[50px] drop-shadow  '> 
-          <div className='ml-10 mt-10 ' >
+          <div className='ml-10 mt-10' >
             <Chart data={parsedData} name="Light Consumption"/>
           </div>
           <div className='mt-10 ml-10'  >
@@ -204,7 +204,7 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
-      <div>
+    <div>
 
 
 
