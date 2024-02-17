@@ -7,25 +7,15 @@ import  { useRouter } from 'next/navigation';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
 
-const data = [
-	{ time: '2018-12-22', value: 32.51 },
-	{ time: '2018-12-23', value: 31.11 },
-	{ time: '2018-12-24', value: 27.02 },
-	{ time: '2018-12-25', value: 27.32 },
-	{ time: '2018-12-26', value: 25.17 },
-	{ time: '2018-12-27', value: 28.89 },
-	{ time: '2018-12-28', value: 25.46 },
-	{ time: '2018-12-29', value: 23.92 },
-	{ time: '2018-12-30', value: 22.68 },
-	{ time: '2018-12-31', value: 22.67 },
-];
 
 export default function Dashboard() {
   const router = useRouter();
   const { file, setFile } = useFile();
   const [priceData, setPriceData] = useState(null);
+
   const [porcentajeConsumo, setporcentajeConsumo] = useState(null);
   const [kilogramosC02, setkilogramosC02] = useState(null);
+  const [parsedData, setParsedData] = useState([]);
 
   useEffect(() => {
     if (file === null){
@@ -43,9 +33,10 @@ export default function Dashboard() {
       }
     };
   
-
     fetchPriceData();
     procesarCSV(file);
+    ParsearCSVGráficas(file, setParsedData);
+    console.log(parsedData);
   }, []); 
 
   const procesarCSV = (file) => {
@@ -63,7 +54,7 @@ export default function Dashboard() {
             if (index === 0) return;
 
             const cells = line.split(';');
-            const value = parseFloat(cells[3].replace(',', '.')); // Tomar el valor de la columna 4
+            const value = parseFloat(cells[3].replace(',', '.')); 
             if (!isNaN(value)) {
                 sum += value;
             }
@@ -75,16 +66,45 @@ export default function Dashboard() {
 
         sum = sum * 100;
 
-        // Aquí necesitas actualizar tu manejo del DOM o mejor aún, usar el estado de React para renderizar esta información
-        console.log(`Consumes el ${sum.toFixed(2)}% de lo que consume una persona de media al día, esto supone el ${kgCO2.toFixed(2)}kg de CO2 diariamente`);
-        console.log(`Este CO2 supone blablabla para el planeta.`);
-
         setporcentajeConsumo(sum.toFixed(2));
         setkilogramosC02(kgCO2.toFixed(2));
     };
 
     reader.readAsText(file);
   }
+
+  const ParsearCSVGráficas = (file, setParsedData) => {
+    const reader = new FileReader();
+
+    reader.onload = function(event) {
+        const content = event.target.result;
+        const lines = content.split('\n');
+        const data = [];
+
+        lines.forEach((line, index) => {
+            if (index === 0) return;
+
+            const cells = line.split(';');
+            const fecha = cells[1]; // "dd/mm/yyyy"
+            let hora = parseInt(cells[2], 10); // Hora como número
+            const consumo = parseFloat(cells[3].replace(',', '.')); // Convertir el consumo
+
+            const horaFormateada = hora < 10 ? `0${hora}:00` : `${hora}:00`;
+
+            const fechaISO = fecha.split('/').reverse().join('-') + ' ' + horaFormateada;
+
+            // Convertir a tiempo UNIX en segundos
+            const time = Date.parse(fechaISO) / 1000;
+
+            if (!isNaN(consumo) && !isNaN(time)) {
+                data.push({ time, value: consumo });
+            }
+        });
+        setParsedData(data);
+    };
+    reader.readAsText(file);
+  }
+
 
   return (
     <main className="flex flex-col justify-between overflow-hidden">
@@ -137,15 +157,15 @@ export default function Dashboard() {
       <div className='bg-[#B1E0FC] mb-10 '>
       <div className='flex justify-between cap-10 bg-black rounded-t-[50px] drop-shadow '>
         <div className='ml-10 mt-10 ' >
-        <Chart data={data} />
+        <Chart data={parsedData} name="Light Consumption"/>
         </div>
         <div className='mt-10' >
 
-      <Chart data={data} />
+      <Chart data={parsedData} name="Light Price"/>
       </div>
       <div className='mr-10 mt-10' >
 
-      <Chart data={data} />
+      <Chart data={parsedData} name="Your Light Price"/>
       </div>
          </div>
 </div>
