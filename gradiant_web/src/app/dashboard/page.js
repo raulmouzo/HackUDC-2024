@@ -86,21 +86,25 @@ export default function Dashboard() {
               showIndicators={false} // Oculta los indicadores de página
               showThumbs={false} // Oculta las miniaturas (thumbnails) de las imágenes
               infiniteLoop={true} // Permite que el carrusel se repita infinitamente
-              autoPlay={false} // Opcional: para que el carrusel reproduzca automáticamente
+              autoPlay={true} // Opcional: para que el carrusel reproduzca automáticamente
               interval={5000}
 
               >
               <div>
-                  <img src="/car.gif" className='mb-[-100px]'/>
-                  <p className='text-[20px] text-white mb-5 text-center font-sans font-semibold max-w-[800px] mx-auto '>frase realcionada con la imagen</p>
+                  <img src="/Carr.gif" className='mb-[-100px]'/>
+                  <p className='text-[20px] text-white mb-5 text-center font-sans font-semibold max-w-[800px] mx-auto '>Coche</p>
               </div>
               <div>
-                  <img src="/car.gif" className='mb-[-100px]'/>
-                  <p className='text-[20px] text-white mb-5 text-center font-sans font-semibold max-w-[800px] mx-auto '>frase realcionada con la imagen</p>
-              </div>0
+                  <img src="/ice.gif" className='mb-[-100px]'/>
+                  <p className='text-[20px] text-white mb-5 text-center font-sans font-semibold max-w-[800px] mx-auto '>ielo</p>
+              </div>
               <div>
-                  <img src="/car.gif" className='mb-[-100px]'/>
-                  <p className='text-[20px] text-white mb-5 text-center font-sans font-semibold max-w-[800px] mx-auto '>frase realcionada con la imagen</p>
+                  <img src="/tree.gif" className='mb-[-100px]'/>
+                  <p className='text-[20px] text-white mb-5 text-center font-sans font-semibold max-w-[800px] mx-auto '>arbol</p>
+              </div>
+              <div>
+                  <img src="/plane.gif" className='mb-[-100px]'/>
+                  <p className='text-[20px] text-white mb-5 text-center font-sans font-semibold max-w-[800px] mx-auto '>abion</p>
               </div>
           </Carousel>
         </div>
