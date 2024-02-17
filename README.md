@@ -1,10 +1,6 @@
 # WattCheck - HackUDC 2024 Project
 
-## Galery
-![865shots_so](https://github.com/raulmouzo/HackUDC-2024/assets/85120579/8591dc09-6eb6-4866-992b-616bad72e8a3)
-
-![797shots_so](https://github.com/raulmouzo/HackUDC-2024/assets/85120579/3a0bfd9b-b03f-400c-9c1c-b8b85f4c91df)
-
+![WattCheck_image](images/WattCheck-1.png)
 
 ## Description
 Nuestro proyecto para el HackUDC 2024 es una web online que sirve para visualizar
@@ -55,3 +51,12 @@ This project is licensed under the [GNUL3 License](https://choosealicense.com/li
 
 ## Agradecimientos
 Nos gustaría dar las gracias a HackUDC 2024 por ofrecernos la oportunidad de desarrollar este proyecto y a los miembros de nuestro equipo por su duro trabajo y dedicación. Además, agradecemos el uso de bibliotecas o recursos de terceros en el desarrollo de WattCheck.
+
+## Galery
+
+![WattCheck_image](images/WattCheck.png)
+
+![WattCheck_image](images/WattCheck-2.png)
+
+![WattCheck_image](images/WattCheck-3.png)
+
