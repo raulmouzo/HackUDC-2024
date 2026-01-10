@@ -1,7 +1,5 @@
 # WattCheck - HackUDC 2024 Project
 
-![WattCheck_image](images/WattCheck-1.png)
-
 ## Descripción
 
 Nuestro proyecto para el HackUDC 2024 es una web online que sirve para visualizar
