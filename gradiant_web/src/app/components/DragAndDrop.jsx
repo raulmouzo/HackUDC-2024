@@ -35,7 +35,7 @@ export const DragAndDrop = () => {
     }
     setError("");
     setFileName(file.name);
-    setFile(file);
+    void setFile(file);
     router.push("/dashboard");
   };
 

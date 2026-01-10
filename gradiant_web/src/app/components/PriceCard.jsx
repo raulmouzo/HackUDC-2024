@@ -1,31 +1,47 @@
-// LowestPriceCard.js
-import React from 'react';
+import React from "react";
+
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 function PriceCard({ price, title }) {
   return (
-    <div className='border-white border-[5px] rounded-lg h-[400px] w-[350px]' style={{ boxShadow: '0 0 20px rgba(255, 255, 255, 0.5)' }}>
-      <h3 className='text-[30px] font-sans font-semibold m-5 text-center'>
-        {title}
-      </h3>
-      <div className='text-[20px] font-sans font-semibold m-5 text-start mt-5'>
-        Price:
-      </div>
-      <div className='text-[30px] text-white font-sans font-semibold mx-5 mt-1'>
-        {price?.price} €/kWh
-      </div>
-      <div className='text-[20px] font-sans font-semibold mx-5 text-start mt-3'>
-        Date:
-      </div>
-      <div className='text-[30px] text-white font-sans font-semibold mx-5 mt-1'>
-        {price?.date}
-      </div>
-      <div className='text-[20px] font-sans font-semibold mx-5 text-start mt-5'>
-        Hour:
-      </div>
-      <div className='text-[30px] text-white font-sans font-semibold mx-5 mt-1'>
-        {price?.hour}
-      </div>
-    </div>
+    <Card className="h-full">
+      <CardHeader>
+        <CardTitle className="text-base uppercase tracking-wide text-white/70">
+          {title}
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div>
+          <p className="text-xs uppercase tracking-[0.2em] text-white/50">
+            Price
+          </p>
+          <p className="text-2xl font-semibold text-white">
+            {price?.price ?? "--"} <span className="text-sm">€/kWh</span>
+          </p>
+        </div>
+        <div>
+          <p className="text-xs uppercase tracking-[0.2em] text-white/50">
+            Date
+          </p>
+          <p className="text-lg font-semibold text-white">
+            {price?.date ?? "--"}
+          </p>
+        </div>
+        <div>
+          <p className="text-xs uppercase tracking-[0.2em] text-white/50">
+            Hour
+          </p>
+          <p className="text-lg font-semibold text-white">
+            {price?.hour ?? "--"}
+          </p>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 

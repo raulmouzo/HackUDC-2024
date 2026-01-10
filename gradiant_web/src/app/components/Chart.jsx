@@ -36,13 +36,15 @@ export const Chart = props => {
 				chart.applyOptions({ width: chartContainerRef.current.clientWidth });
 			};
 
-			const chart = createChart(chartContainerRef.current, {
+				const chart = createChart(chartContainerRef.current, {
 				layout: {
 					background: { type: ColorType.Solid, color: backgroundColor },
 					textColor,
 				},
-				width: selectedId ? 1500 : chartContainerRef.current.clientWidth,
-				height: selectedId ? 700 : 200,
+					width: selectedId
+            ? chartContainerRef.current.clientWidth
+            : chartContainerRef.current.clientWidth,
+					height: selectedId ? 520 : 220,
         		grid: gridOptions,
 				timeScale: {
 					tickMarkFormatter: (time, tickMarkType, locale) => {
@@ -75,13 +77,17 @@ export const Chart = props => {
 	);
 
   return (
-<div className='bg-black border-[5px] rounded-[15px] py-5 px-10 font-semibold min-w-[400px]' style={{ boxShadow: '0 0 20px rgba(255, 255, 255, 0.5)' }}>
-        <h2 className="text-[36px] text-white mb-5">
-            {name}
-        </h2>
-		<p className="text-white/[.5] text-[20px]">{subtitle}</p>
-        <div ref={chartContainerRef} />
+    <div className="w-full">
+      <div className="mb-4">
+        <h2 className="text-lg font-semibold text-white">{name}</h2>
+        <p className="text-sm text-white/60">{subtitle}</p>
+      </div>
+      <div
+        ref={chartContainerRef}
+        className={`w-full rounded-2xl border border-white/10 bg-black/60 ${
+          selectedId ? "h-[520px]" : "h-[220px]"
+        }`}
+      />
     </div>
   );
 };
-

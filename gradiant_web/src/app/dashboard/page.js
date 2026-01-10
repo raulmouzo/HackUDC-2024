@@ -1,145 +1,128 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { Carousel } from "react-responsive-carousel";
+import { motion, AnimatePresence } from "framer-motion";
+import { Download } from "lucide-react";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+
 import { Chart } from "@/app/components/Chart";
-import { useFile } from '../context/csvContex';
-import  { useRouter } from 'next/navigation';
-import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { Carousel } from 'react-responsive-carousel';
-import { motion, AnimatePresence } from 'framer-motion';
-import PriceCard from '../components/PriceCard';
+import PriceCard from "../components/PriceCard";
+import { useFile } from "../context/csvContex";
 
-import * as XLSX from 'xlsx';
-import { saveAs } from 'file-saver';
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+
+/* -------------------------------------------------------------------------- */
+/*                                    DATA                                    */
+/* -------------------------------------------------------------------------- */
+
+const ELECTRICITY_PRICES = [
+  0.11604, 0.09151, 0.09402, 0.09571, 0.09494, 0.09517, 0.09438, 0.09343,
+  0.09265, 0.08963, 0.08415, 0.07765, 0.07165, 0.0693, 0.06982, 0.06897,
+  0.06762, 0.07298, 0.08434, 0.10751, 0.12783, 0.11863, 0.11465, 0.1134,
+];
+
+const PRICE_SERIES = ELECTRICITY_PRICES.map((value, hour) => ({
+  time: Date.parse(`2023-02-15 ${String(hour).padStart(2, "0")}:00`) / 1000,
+  value,
+}));
+
+const COLORS_PRICE = {
+  backgroundColor: "black",
+  lineColor: "#651fff",
+  textColor: "white",
+  areaTopColor: "#300f79",
+  areaBottomColor: "#160738",
+};
+
+const COLORS_COST = {
+  backgroundColor: "black",
+  lineColor: "rgba(38, 198, 218, 1)",
+  textColor: "#d1d4dc",
+  areaTopColor: "rgba(20, 170, 190, 0.56)",
+  areaBottomColor: "rgba(38, 198, 218, 0.04)",
+};
+
+/* -------------------------------------------------------------------------- */
+/*                                  COMPONENT                                 */
+/* -------------------------------------------------------------------------- */
 
 export default function Dashboard() {
   const router = useRouter();
-  const { file, setFile } = useFile();
-  const [lowestPrice, setlowestPrice] = useState(null);
-  const [highestPrice, sethighestPrice] = useState(null);
+  const { file, isReady } = useFile();
+
+  const [parsedConsumption, setParsedConsumption] = useState([]);
+  const [parsedCost, setParsedCost] = useState([]);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [selectedChart, setSelectedChart] = useState(null);
+
+  const [consumptionPercent, setConsumptionPercent] = useState(null);
+  const [co2Kg, setCo2Kg] = useState(null);
+
+  const [lowestPrice, setLowestPrice] = useState(null);
+  const [highestPrice, setHighestPrice] = useState(null);
   const [cheapestPrice1, setCheapestPrice1] = useState(null);
   const [cheapestPrice2, setCheapestPrice2] = useState(null);
 
-  const [currentSlide, setCurrentSlide] = useState(0); 
-  const [porcentajeConsumo, setporcentajeConsumo] = useState(null);
-  const [kilogramosC02, setkilogramosC02] = useState(null);
-  const [parsedData, setParsedData] = useState([]);
-  const [parsedData2, setParsedData2] = useState([]);
-  const [selectedId, setSelectedId] = useState(null);
-
-
-  const prices = [{time: Date.parse('2023-02-15 00:00')/1000, value: 0.11604},
-                  {time: Date.parse('2023-02-15 01:00')/1000, value: 0.09151}, 
-                  {time: Date.parse('2023-02-15 02:00')/1000, value: 0.09402}, 
-                  {time: Date.parse('2023-02-15 03:00')/1000, value: 0.09571}, 
-                  {time: Date.parse('2023-02-15 04:00')/1000, value: 0.09494}, 
-                  {time: Date.parse('2023-02-15 05:00')/1000, value: 0.09517}, 
-                  {time: Date.parse('2023-02-15 06:00')/1000, value: 0.09438}, 
-                  {time: Date.parse('2023-02-15 07:00')/1000, value: 0.09343}, 
-                  {time: Date.parse('2023-02-15 08:00')/1000, value: 0.09265}, 
-                  {time: Date.parse('2023-02-15 09:00')/1000, value: 0.08963}, 
-                  {time: Date.parse('2023-02-15 10:00')/1000, value: 0.08415}, 
-                  {time: Date.parse('2023-02-15 11:00')/1000, value: 0.07765}, 
-                  {time: Date.parse('2023-02-15 12:00')/1000, value: 0.07165}, 
-                  {time: Date.parse('2023-02-15 13:00')/1000, value: 0.0693}, 
-                  {time: Date.parse('2023-02-15 14:00')/1000, value: 0.06982}, 
-                  {time: Date.parse('2023-02-15 15:00')/1000, value: 0.06897}, 
-                  {time: Date.parse('2023-02-15 16:00')/1000, value: 0.06762}, 
-                  {time: Date.parse('2023-02-15 17:00')/1000, value: 0.07298}, 
-                  {time: Date.parse('2023-02-15 18:00')/1000, value: 0.08434}, 
-                  {time: Date.parse('2023-02-15 19:00')/1000, value: 0.10751}, 
-                  {time: Date.parse('2023-02-15 20:00')/1000, value: 0.12783}, 
-                  {time: Date.parse('2023-02-15 21:00')/1000, value: 0.11863}, 
-                  {time: Date.parse('2023-02-15 22:00')/1000, value: 0.11465}, 
-                  {time: Date.parse('2023-02-15 23:00')/1000, value: 0.1134}];
-
-
-// Colores
-const colors1 = {
-  backgroundColor: 'black',
-  lineColor: '#651fff',
-  textColor: 'white',
-  areaTopColor: '#300f79',
-  areaBottomColor: '#160738',
-};
-
-const colors2 = {
-  backgroundColor: '#black',
-  lineColor: 'rgba(38, 198, 218, 1)',
-  textColor: '#d1d4dc',
-  areaTopColor: 'rgba(20, 170, 190, 0.56)',
-  areaBottomColor: 'rgba(38, 198, 218, 0.04)',
-};
+  /* ------------------------------------------------------------------------ */
+  /*                                   EFFECTS                                */
+  /* ------------------------------------------------------------------------ */
 
   useEffect(() => {
-    if (file === null) {
-      return;
-    }
+    if (!isReady || !file) return;
 
-    const fetchLowestPrice = async () => {
-      try {
-        const response = await fetch('/api/prices/min');
-        const data = await response.json();
-        setlowestPrice(data);
-      } catch (error) {
-        console.error("Error al recuperar los datos:", error);
-      }
-    };
+    processCSV(file);
+    parseConsumptionSeries(file);
+    parseCostSeries(file);
 
-    const fetchHighestPrice = async () => {
-      try {
-        const response = await fetch('/api/prices/max');
-        const data = await response.json();
-        sethighestPrice(data);
-      } catch (error) {
-        console.error("Error al recuperar los datos:", error);
-      }
-    };
+    fetch("/api/prices/min")
+      .then((r) => r.json())
+      .then(setLowestPrice);
+    fetch("/api/prices/max")
+      .then((r) => r.json())
+      .then(setHighestPrice);
+    fetch("/api/prices/cheapests1")
+      .then((r) => r.json())
+      .then(setCheapestPrice1);
+    fetch("/api/prices/cheapests2")
+      .then((r) => r.json())
+      .then(setCheapestPrice2);
+  }, [file, isReady]);
 
-    const fetchCheapestPrice1 = async () => {
-      try {
-        const response = await fetch('/api/prices/cheapests1');
-        const data = await response.json();
-        setCheapestPrice1(data);
-        console.log("AAAA", data);
-      } catch (error) {
-        console.error("Error al recuperar los datos:", error);
-      }
-    };
-
-    const fetchCheapestPrice2 = async () => {
-      try {
-        const response = await fetch('/api/prices/cheapests2');
-        const data = await response.json();
-        setCheapestPrice2(data);
-      } catch (error) {
-        console.error("Error al recuperar los datos:", error);
-      }
-    };
-  
-    fetchLowestPrice();
-    fetchHighestPrice();
-    fetchCheapestPrice1();
-    fetchCheapestPrice2();
-    
-
-    procesarCSV(file);
-    ParsearCSVGráficas(file, setParsedData);
-    ParsearCSVGráficasPrecio(file, setParsedData2);
-  }, [file]); 
-
-  if (file === null) {
+  if (!isReady) {
     return (
-      <main className="flex min-h-screen flex-col items-center justify-center bg-[#B1E0FC] p-6 text-center">
-        <h2 className="mb-4 text-3xl font-bold text-black">Upload a CSV to continue</h2>
-        <p className="mb-6 max-w-xl text-black/70">
+      <main className="flex min-h-screen flex-col items-center justify-center bg-slate-950 text-white">
+        <p className="text-sm uppercase tracking-[0.2em] text-white/60">
+          Loading data
+        </p>
+      </main>
+    );
+  }
+
+  if (!file) {
+    return (
+      <main className="flex min-h-screen flex-col items-center justify-center bg-slate-950 px-6 text-center text-white">
+        <h2 className="mb-3 text-2xl font-semibold">Upload a CSV to continue</h2>
+        <p className="mb-6 max-w-lg text-sm text-white/70">
           We could not find your uploaded file. Please go back and select your CSV
           again.
         </p>
         <button
           type="button"
-          onClick={() => router.push('/')}
-          className="rounded-full bg-black px-6 py-3 text-white transition hover:bg-black/80"
+          onClick={() => router.push("/")}
+          className="rounded-full bg-white/10 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/20"
         >
           Back to upload
         </button>
@@ -147,309 +130,316 @@ const colors2 = {
     );
   }
 
-  const procesarCSV = (file) => {
+  /* ------------------------------------------------------------------------ */
+  /*                                CSV LOGIC                                 */
+  /* ------------------------------------------------------------------------ */
+
+  const processCSV = (csvFile) => {
     const reader = new FileReader();
 
-    reader.onload = function(event) {
-        const content = event.target.result;
-        const lines = content.split('\n');
+    reader.onload = (e) => {
+      const lines = e.target.result.split("\n");
+      let total = 0;
 
-        let sum = 0;
-        let kgCO2 = 0;
-        let kgCO2MediaDia = 14;
+      lines.slice(1).forEach((line) => {
+        const value = parseFloat(line.split(";")[3]?.replace(",", "."));
+        if (!isNaN(value)) total += value;
+      });
 
-        lines.forEach((line, index) => {
-            // Ignorar la primera línea si contiene encabezados
-            if (index === 0) return;
+      const dailyAverage = (total / 9) * 100;
+      const co2 = (dailyAverage * 14) / 100;
 
-            const cells = line.split(';');
-            const value = parseFloat(cells[3].replace(',', '.')); 
-            if (!isNaN(value)) {
-                sum += value;
-            }
-        });
-
-        sum /= 9;
-
-        kgCO2 = sum * kgCO2MediaDia;
-
-        sum = sum * 100;
-
-        setporcentajeConsumo(sum.toFixed(2));
-        setkilogramosC02(kgCO2.toFixed(2));
-
+      setConsumptionPercent(dailyAverage.toFixed(2));
+      setCo2Kg(co2.toFixed(2));
     };
 
-    reader.readAsText(file);
-  }
+    reader.readAsText(csvFile);
+  };
 
-  const ParsearCSVGráficas = (file, setParsedData) => {
+  const parseConsumptionSeries = (csvFile) => {
     const reader = new FileReader();
 
-    reader.onload = function(event) {
-        const content = event.target.result;
-        const lines = content.split('\n');
-        const data = [];
+    reader.onload = (e) => {
+      const data = [];
 
-        lines.forEach((line, index) => {
-            if (index === 0) return;
+      e.target.result
+        .split("\n")
+        .slice(1)
+        .forEach((line) => {
+          const cells = line.split(";");
+          const date = cells[1];
+          const hour = parseInt(cells[2], 10);
+          const value = parseFloat(cells[3]?.replace(",", "."));
 
-            const cells = line.split(';');
-            const fecha = cells[1]; // "dd/mm/yyyy"
-            let hora = parseInt(cells[2], 10); // Hora como número
-            const consumo = parseFloat(cells[3].replace(',', '.')); // Convertir el consumo
+          if (isNaN(value) || isNaN(hour)) return;
 
-            const horaFormateada = hora < 10 ? `0${hora}:00` : `${hora}:00`;
+          const time =
+            Date.parse(
+              `${date.split("/").reverse().join("-")} ${String(hour).padStart(
+                2,
+                "0"
+              )}:00`
+            ) / 1000;
 
-            const fechaISO = fecha.split('/').reverse().join('-') + ' ' + horaFormateada;
-
-            // Convertir a tiempo UNIX en segundos
-            const time = Date.parse(fechaISO) / 1000;
-
-            if (!isNaN(consumo) && !isNaN(time)) {
-                data.push({ time, value: consumo });
-            }
+          data.push({ time, value });
         });
-        setParsedData(data);
-    };
-    reader.readAsText(file);
-  }
 
-  const ParsearCSVGráficasPrecio = (file, setParsedData) => {
-    const precios = [0.09151, 0.09402, 0.09571, 0.09494, 0.09517, 0.09438, 0.09343, 0.09265, 0.08963, 0.08415, 0.07765, 0.07165, 0.0693, 0.06982, 0.06897, 0.06762, 0.07298, 0.08434, 0.10751, 0.12783, 0.11863, 0.11465, 0.1134, 0.11604]
+      setParsedConsumption(data);
+    };
+
+    reader.readAsText(csvFile);
+  };
+
+  const parseCostSeries = (csvFile) => {
     const reader = new FileReader();
 
-    reader.onload = function(event) {
-        const content = event.target.result;
-        const lines = content.split('\n');
-        const data = [];
+    reader.onload = (e) => {
+      const data = [];
 
-        lines.forEach((line, index) => {
-            if (index === 0) return;
+      e.target.result
+        .split("\n")
+        .slice(1)
+        .forEach((line, index) => {
+          const cells = line.split(";");
+          const date = cells[1];
+          const hour = parseInt(cells[2], 10);
+          const consumption = parseFloat(cells[3]?.replace(",", "."));
 
-            const cells = line.split(';');
-            const fecha = cells[1]; // "dd/mm/yyyy"
-            let hora = parseInt(cells[2], 10); // Hora como número
-            const consumo = parseFloat(cells[3].replace(',', '.')) * precios[index]; // Convertir el consumo
+          if (isNaN(consumption) || isNaN(hour)) return;
 
-            const horaFormateada = hora < 10 ? `0${hora}:00` : `${hora}:00`;
+          const time =
+            Date.parse(
+              `${date.split("/").reverse().join("-")} ${String(hour).padStart(
+                2,
+                "0"
+              )}:00`
+            ) / 1000;
 
-            const fechaISO = fecha.split('/').reverse().join('-') + ' ' + horaFormateada;
-
-            // Convertir a tiempo UNIX en segundos
-            const time = Date.parse(fechaISO) / 1000;
-
-            if (!isNaN(consumo) && !isNaN(time)) {
-                data.push({ time, value: consumo });
-            }
+          data.push({
+            time,
+            value: consumption * ELECTRICITY_PRICES[index],
+          });
         });
-        setParsedData2(data);
+
+      setParsedCost(data);
     };
-    reader.readAsText(file);
+
+    reader.readAsText(csvFile);
+  };
+
+  /* ------------------------------------------------------------------------ */
+  /*                               EXPORT LOGIC                               */
+  /* ------------------------------------------------------------------------ */
+
+  const downloadExcel = () => {
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const workbook = XLSX.read(e.target.result, { type: "binary" });
+      const sheet = workbook.Sheets[workbook.SheetNames[0]];
+      const buffer = XLSX.write(workbook, {
+        bookType: "xlsx",
+        type: "array",
+      });
+
+      saveAs(
+        new Blob([buffer], {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        }),
+        "electricity-data.xlsx"
+      );
+    };
+
+    reader.readAsBinaryString(file);
+  };
+
+  /* ------------------------------------------------------------------------ */
+  /*                                   GUARD                                  */
+  /* ------------------------------------------------------------------------ */
+
+  if (!file) {
+    return (
+      <main className="flex min-h-screen items-center justify-center">
+        <Button onClick={() => router.push("/")}>Back to upload</Button>
+      </main>
+    );
   }
 
+  /* ------------------------------------------------------------------------ */
+  /*                                   TEXT                                   */
+  /* ------------------------------------------------------------------------ */
 
+  const safeKg = Number(co2Kg ?? 0);
+  const safePercent = Number(consumptionPercent ?? 0);
 
-  const textos = [
-    `${(kilogramosC02 * 100 / 4.17).toFixed(0)}% of what an average car emits in a day`,
-    `You're responsible for melting ${(34.72 * (porcentajeConsumo / 100)).toFixed(0)} liters of ice every 24 hours`,
-    `It takes ${(kilogramosC02 / 0.027).toFixed(0)} trees to absorb what you pollute in a day`,
-    `It would take ${(22780 / kilogramosC02).toFixed(0)} people like you to match a quiet day on a private jet for Taylor Swift`,
+  const impactTexts = [
+    `${((safeKg * 100) / 4.17).toFixed(
+      0
+    )}% of the daily emissions of an average car`,
+    `Your electricity use is equivalent to melting ${(
+      34.72 *
+      (safePercent / 100)
+    ).toFixed(0)} liters of ice per day`,
+    `It would take ${(safeKg / 0.027).toFixed(
+      0
+    )} trees to offset your daily footprint`,
+    `It would take ${(22780 / safeKg).toFixed(
+      0
+    )} people with your footprint to match a quiet day on a private jet`,
   ];
 
-
-  const handleSlideChange = (index) => {
-    setCurrentSlide(index); // Actualiza el estado del índice de la diapositiva actual cuando cambia el carrusel
-  };
-
-  const convertCSVToExcelAndDownload = (csvFile) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const workbook = XLSX.read(e.target.result, { type: 'binary' });
-      const wsname = workbook.SheetNames[0];
-      const ws = workbook.Sheets[wsname];
-      /* Opcional: Aquí puedes manipular ws si necesitas modificar el contenido antes de guardarlo */
-      const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-      const data = new Blob([excelBuffer], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'});
-      saveAs(data, 'archivoConvertido.xlsx');
-    };
-    reader.readAsBinaryString(csvFile);
-  };
-
-  const handleDownloadExcel = () => {
-    convertCSVToExcelAndDownload(file);
-  };
+  /* ------------------------------------------------------------------------ */
+  /*                                   RENDER                                 */
+  /* ------------------------------------------------------------------------ */
 
   return (
-    <main className="flex flex-col justify-between overflow-hidden">
-
-      <div className='flex bg-[#B1E0FC] pb-10 rounded-br-[50px] justify-left items-left'>
-        <div className='items-center'>
-            <Carousel
-              className=' max-w-[50vw] items-center mx-auto'
-              showArrows={false} // Oculta las flechas
-              showStatus={false} // Oculta el estado de la página (ej., "1 of 3")
-              showIndicators={false} // Oculta los indicadores de página
-              showThumbs={false} // Oculta las miniaturas (thumbnails) de las imágenes
-              infiniteLoop={true} // Permite que el carrusel se repita infinitamente
-              autoPlay={true} // Opcional: para que el carrusel reproduzca automáticamente
-              interval={4200}
-              onChange={handleSlideChange}
+    <main className="min-h-screen bg-slate-950 text-white">
+      <div className="mx-auto max-w-6xl space-y-12 px-6 py-10">
+        {/* HERO IMPACT CARD */}
+        <Card className="overflow-hidden">
+          <CardHeader>
+            <CardTitle>Electricity impact snapshot</CardTitle>
+            <CardDescription>
+              How your electricity usage translates into real-world impact.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="overflow-hidden rounded-3xl border border-white/10">
+              <Carousel
+                showArrows={false}
+                showThumbs={false}
+                showStatus={false}
+                showIndicators={false}
+                autoPlay
+                infiniteLoop
+                interval={4200}
+                onChange={setCurrentSlide}
               >
-              <div>
-                  <img src="/Carr.gif" className='mb-[-100px]'/>
-              </div>
-              <div>
-                  <img src="/ice.gif" className='mb-[-100px]'/>
-              </div>
-              <div>
-                  <img src="/tree.gif" className='mb-[-100px]'/>
-              </div>
-              <div>
-                  <img src="/plane.gif" className='mb-[-100px]'/>
-              </div>
-          </Carousel>
-        </div>
-        <div className='flex items-center w-1/5 justify-bottom bg-lime-600 mb-[100px] ml-[50px] mr-[50px] rounded-b-[50px] drop-shadow-2xl'> 
+                <img
+                  src="/Carr.gif"
+                  className="h-[420px] w-full object-cover"
+                />
+                <img src="/ice.gif" className="h-[420px] w-full object-cover" />
+                <img
+                  src="/tree.gif"
+                  className="h-[420px] w-full object-cover"
+                />
+                <img
+                  src="/plane.gif"
+                  className="h-[420px] w-full object-cover"
+                />
+              </Carousel>
+            </div>
 
-        <p className=" col-span-2 text-2xl text-left font-sans font-semibold m-10">{textos[currentSlide]}</p>
-        </div>
-        <div className='flex items-center max-w-40'>
-          <div className='flex flex-col justify-center items-center h-full'>
-            <h2 className={`text-[90px]  mb-5 text-center justify-center font-sans  font-bold ${porcentajeConsumo < 30 ? 'text-white' : porcentajeConsumo < 50 ? 'text-yellow-500' : porcentajeConsumo < 80 ? 'text-green-600' : porcentajeConsumo < 150 ? 'text-orange-700' : 'text-red-700'}`}>
-              {porcentajeConsumo}%
-            </h2>
-            <p className='text-[20px] mb-5 text-center font-sans font-semibold'>You consume {porcentajeConsumo}% of what a person consumes on average per day, that is {kilogramosC02} kg of CO2 per day.</p>
+            <p className="mx-auto max-w-3xl text-center text-xl text-white/80">
+              {impactTexts[currentSlide]}
+            </p>
+
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="rounded-2xl bg-black/40 p-6">
+                <p className="text-xs uppercase text-white/60">Daily usage</p>
+                <p className="mt-2 text-5xl font-semibold">
+                  {consumptionPercent ?? "--"}%
+                </p>
+              </div>
+              <div className="rounded-2xl bg-black/40 p-6">
+                <p className="text-xs uppercase text-white/60">CO₂ footprint</p>
+                <p className="mt-2 text-3xl font-semibold">
+                  {co2Kg ?? "--"} kg CO₂
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* CHARTS */}
+        <section className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-2xl font-semibold">Electricity charts</h2>
+            <Badge>Interactive</Badge>
           </div>
-        </div>
 
-      </div>
- 
-      <div className='bg-[#B1E0FC] rounded-tr-[50px] mb-[50px] '> 
-        <div className='flex justify-left bg-black rounded-t-[50px] drop-shadow'>
-          {[
-            { id: 'lightConsumption', data: parsedData, name: "Light Consumption", subtitle: "h | kWh"},
-            { id: 'lightPrice', data: prices, name: "Light Price", colors: colors1,  subtitle: "h | €/kWh"},
-            { id: 'yourLightPrice', data: parsedData2, name: "Your Light Price", colors: colors2, subtitle: "h | h * €/kWh"}
-          ].map(chart => (
-            <motion.div key={chart.id} layoutId={chart.id} onClick={() => setSelectedId(chart.id)} className='ml-10 mt-10'>
-              <Chart data={chart.data} name={chart.name} colors={chart.colors} subtitle={chart.subtitle}/>
-            </motion.div>
-          ))}
-          <div className="flex items-center py-auto mx-auto justify-center"> 
-            <p className="text-9xl text-center  move-up ray">⚡</p>
-          </div>      
-        </div>
-      </div>
-
-      <div>
-      <AnimatePresence>
-        {selectedId && (
-          <motion.div 
-            layoutId={selectedId} 
-            className="absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center z-50"
-            style={{ background: 'rgba(0, 0, 0, 0.5)' }} // Fondo semitransparente
-            onClick={() => setSelectedId(null)} // Cierra al hacer clic fuera
-          >
-            {/* Contenedor de la gráfica con estilo ampliado */}
-            <motion.div 
-              className="p-5 rounded-lg"
-              style={{
-                minWidth: '80vw', // Ajusta al tamaño que prefieras
-                minHeight: '80vh', // Ajusta al tamaño que prefieras
-                background: 'white',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                position: 'relative', // Para posicionamiento absoluto del botón de cierre
-              }}
-              onClick={(e) => e.stopPropagation()} // Previene el cierre al hacer clic dentro
-            >
-              {/* Renderiza la gráfica seleccionada a gran escala */}
-              {selectedId === 'lightConsumption' && <Chart data={parsedData} name="Light Consumption" selectedId={selectedId} subtitle="h | kWh"/>}
-              {selectedId === 'lightPrice' && <Chart data={prices} name="Light Price" selectedId={selectedId} colors={colors1} subtitle="h | €/kWh"/>}
-              {selectedId === 'yourLightPrice' && <Chart data={parsedData2} name="Your Light Price" selectedId={selectedId} colors={colors2} subtitle="h | h * €/kWh"/>}
-              
-              {/* Opcional: Botón de cierre */}
-              <motion.button 
-                onClick={() => setSelectedId(null)}
-                style={{
-                  position: 'absolute',
-                  top: '10px',
-                  right: '10px',
-                  border: 'none',
-                  background: 'red',
-                  color: 'white',
-                  borderRadius: '50%',
-                  width: '30px',
-                  height: '30px',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  cursor: 'pointer',
-                }}
+          <div className="grid gap-6 lg:grid-cols-3">
+            {[
+              {
+                id: "consumption",
+                title: "Electricity consumption",
+                data: parsedConsumption,
+                subtitle: "Hour | kWh",
+              },
+              {
+                id: "price",
+                title: "Electricity price",
+                data: PRICE_SERIES,
+                subtitle: "Hour | €/kWh",
+                colors: COLORS_PRICE,
+              },
+              {
+                id: "cost",
+                title: "Your electricity cost",
+                data: parsedCost,
+                subtitle: "Hour | €",
+                colors: COLORS_COST,
+              },
+            ].map((chart) => (
+              <motion.div
+                key={chart.id}
+                layoutId={chart.id}
+                onClick={() => setSelectedChart(chart)}
               >
-                X
-              </motion.button>
+                <Card className="cursor-pointer">
+                  <CardContent>
+                    <Chart {...chart} />
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        {/* MODAL */}
+        <AnimatePresence>
+          {selectedChart && (
+            <motion.div
+              className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-6"
+              onClick={() => setSelectedChart(null)}
+            >
+              <motion.div
+                className="w-full max-w-5xl rounded-3xl bg-slate-950 p-6"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <Chart {...selectedChart} />
+                <div className="mt-4 flex justify-end">
+                  <Button onClick={() => setSelectedChart(null)}>Close</Button>
+                </div>
+              </motion.div>
             </motion.div>
-          </motion.div>
-        )}
-        
-        </AnimatePresence>     
+          )}
+        </AnimatePresence>
 
+        {/* PRICES */}
+        <section className="space-y-4">
+          <h2 className="text-2xl font-semibold">
+            Featured electricity prices
+          </h2>
+          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            <PriceCard price={lowestPrice} title="Lowest price" />
+            <PriceCard price={highestPrice} title="Highest price" />
+            <PriceCard price={cheapestPrice1} title="Cheapest period" />
+            <PriceCard price={cheapestPrice2} title="Second cheapest period" />
+          </div>
+        </section>
 
+        {/* EXPORT */}
+        <Button variant="outline" onClick={downloadExcel}>
+          <Download className="h-4 w-4" />
+          Download as Excel
+        </Button>
+
+        <footer className="border-t border-white/10 pt-6 text-xs text-white/50">
+          WattCheck — HackUDC 2024
+        </footer>
       </div>
-
-      <div className='flex gap-[20px] mx-10 flex-col '>
-        <div className='flex '>
-        <div className='bg-black rounded-full  mb-10 border-[5px] border-lime-200 w-[95%] mr-5'  style={{ boxShadow: '0 0 20px rgba(255, 255, 255, 0.5)' }}>
-        <h3 className='text-[30px] text-white font-sans font-bold ml-5 mt-1 mb-1'>
-          Featured Daily Prices
-        </h3> 
-        </div>
-        <div className='bg-black rounded-full border-[5px] border-lime-200 w-[5%] h-[64px] flex items-center py-auto mx-auto justify-center'  style={{ boxShadow: '0 0 20px rgba(255, 255, 255, 0.5)' }}>
-        <p className="text-2xl text-center">👇</p>
-
-        </div>
-        </div>
-        <div className='flex justify-between'>
-          <PriceCard price={lowestPrice} title="Lowest Price"/>
-          <PriceCard price={highestPrice} title="Highest Price"/>
-          <PriceCard price={cheapestPrice1} title="Chepest Price 1"/>
-          <PriceCard price={cheapestPrice2} title="Cheapest Price 2"/>
-        </div>
-      </div>
-
-
-      <button id="download-excel" className="flex justify-center m-20 items-center mx-10 mt-25 border-white border-[1px] text-gray-800 hover:text-black  bg-transparent hover:bg-gray-100 dark:text-gray-100 px-4 py-5 rounded-md transition duration-300 z-10" onClick={handleDownloadExcel}>
-          <h4 className=' font-sans font-semibold text-[20px]'>
-            Download CSV as Excel
-          </h4>
-      </button>
-
-      
-      <div className="bg-blue-500 p-6 rounded-lg shadow-md mx-10">
-      <h3 className="text-2xl text-white font-bold mb-4">Tips to Save Electricity</h3>
-      <ul className="text-white">
-        <li className="mb-2">
-        Use LED bulbs instead of incandescent bulbs.
-        </li>
-        <li className="mb-2">
-        Turn off the lights when you don't need them.
-        </li>
-        <li className="mb-2">
-        Disconnect electronic devices when not in use to avoid consumption in standby mode.        </li>
-        <li className="mb-2">
-        Take advantage of natural light by opening curtains and blinds during the day.        </li>
-        <li className="mb-2">
-        Use energy-efficient appliances and adjust temperature settings on your air conditioning and heating.        </li>
-      </ul>
-    </div>
-      <footer className='flex justify-center items-center bg-black rounded-b-[50px] py-10'>
-        <p className='text-white font-bold'>Thanks for your time &lt;3</p>
-      </footer>
-
     </main>
   );
 }
