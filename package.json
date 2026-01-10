@@ -1,6 +1,15 @@
 {
+  "packageManager": "pnpm@10.20.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
   "dependencies": {
-    "papaparse": "^5.4.1",
-    "react-icons": "^5.0.1"
+    "papaparse": "^5.5.3",
+    "react-icons": "^5.5.0"
+  },
+  "devDependencies": {
+    "vite": "^7.3.1"
   }
 }

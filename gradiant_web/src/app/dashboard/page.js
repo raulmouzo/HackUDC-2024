@@ -79,7 +79,7 @@ const colors2 = {
 
     const fetchLowestPrice = async () => {
       try {
-        const response = await fetch('http://localhost:4000/api/prices/min');
+        const response = await fetch('/api/prices/min');
         const data = await response.json();
         setlowestPrice(data);
       } catch (error) {
@@ -89,7 +89,7 @@ const colors2 = {
 
     const fetchHighestPrice = async () => {
       try {
-        const response = await fetch('http://localhost:4000/api/prices/max');
+        const response = await fetch('/api/prices/max');
         const data = await response.json();
         sethighestPrice(data);
       } catch (error) {
@@ -99,7 +99,7 @@ const colors2 = {
 
     const fetchCheapestPrice1 = async () => {
       try {
-        const response = await fetch('http://localhost:4000/api/prices/cheapests1');
+        const response = await fetch('/api/prices/cheapests1');
         const data = await response.json();
         setCheapestPrice1(data);
         console.log("AAAA", data);
@@ -110,7 +110,7 @@ const colors2 = {
 
     const fetchCheapestPrice2 = async () => {
       try {
-        const response = await fetch('http://localhost:4000/api/prices/cheapests2');
+        const response = await fetch('/api/prices/cheapests2');
         const data = await response.json();
         setCheapestPrice2(data);
       } catch (error) {

@@ -38,12 +38,21 @@ por tu bolsillo y por el futuro del planeta Tierra.
 - Backend: Node.js, (2 APIs creadas con Express).
 - Hosting: Vercel.
 
-## Instalacion
-1. Clonar el respositorio de [GitHub](https://github.com/raulmouzo/HackUDC-2024.git).
-2. Instalar las dependencias usando `npm install`.
-3. Inicializar la API principal ejecutando `node api.js` en la carpeta /api.
-4. Inicializar la API del stub ejecutando `node api_stub.js` en la carpeta /api.
-5. Iniciar la aplicación son `npm run dev`.
+## Requisitos
+- Node.js 18+.
+- pnpm 10+.
+
+## Instalacion y uso (Next.js)
+1. Clonar el repositorio de [GitHub](https://github.com/raulmouzo/HackUDC-2024.git).
+2. Instalar dependencias:
+   - `cd gradiant_web`
+   - `pnpm install`
+3. Iniciar la web (incluye las rutas API internas):
+   - `pnpm run dev`
+4. Abrir `http://localhost:3000`.
+
+## Notas
+- La web principal esta en `gradiant_web` (Next.js).
 
 
 ## Licencia
@@ -59,4 +68,3 @@ Nos gustaría dar las gracias a HackUDC 2024 por ofrecernos la oportunidad de de
 ![WattCheck_image](images/WattCheck-2.png)
 
 ![WattCheck_image](images/WattCheck-3.png)
-
