@@ -72,8 +72,7 @@ const colors2 = {
 };
 
   useEffect(() => {
-    if (file === null){
-      router.push('/');
+    if (file === null) {
       return;
     }
 
@@ -127,7 +126,26 @@ const colors2 = {
     procesarCSV(file);
     ParsearCSVGráficas(file, setParsedData);
     ParsearCSVGráficasPrecio(file, setParsedData2);
-  }, []); 
+  }, [file]); 
+
+  if (file === null) {
+    return (
+      <main className="flex min-h-screen flex-col items-center justify-center bg-[#B1E0FC] p-6 text-center">
+        <h2 className="mb-4 text-3xl font-bold text-black">Upload a CSV to continue</h2>
+        <p className="mb-6 max-w-xl text-black/70">
+          We could not find your uploaded file. Please go back and select your CSV
+          again.
+        </p>
+        <button
+          type="button"
+          onClick={() => router.push('/')}
+          className="rounded-full bg-black px-6 py-3 text-white transition hover:bg-black/80"
+        >
+          Back to upload
+        </button>
+      </main>
+    );
+  }
 
   const procesarCSV = (file) => {
     const reader = new FileReader();

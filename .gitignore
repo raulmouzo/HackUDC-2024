@@ -1,2 +1,10 @@
 node_modules
 .DS_Store
+.next
+.vercel
+.turbo
+.env
+.env.local
+.env.*.local
+pnpm-debug.log
+npm-debug.log

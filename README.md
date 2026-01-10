@@ -54,6 +54,14 @@ por tu bolsillo y por el futuro del planeta Tierra.
 ## Notas
 - La web principal esta en `gradiant_web` (Next.js).
 
+## Deploy en Vercel
+- El despliegue esta configurado via `vercel.json` para usar `gradiant_web`.
+- No necesitas configurar un Root Directory manualmente.
+
+## Tailwind (v4)
+- Configurado via PostCSS en `gradiant_web/postcss.config.mjs`.
+- Entrada principal en `gradiant_web/src/app/globals.css` con `@import "tailwindcss";`.
+
 
 ## Licencia
 This project is licensed under the [GNUL3 License](https://choosealicense.com/licenses/gpl-3.0/).
