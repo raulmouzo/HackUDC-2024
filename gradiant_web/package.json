@@ -12,19 +12,20 @@
   "dependencies": {
     "@files-ui/react": "^1.2.5",
     "file-saver": "^2.0.5",
-    "framer-motion": "^11.18.2",
-    "lightweight-charts": "^4.2.3",
-    "next": "^14.2.35",
+    "framer-motion": "^12.25.0",
+    "lightweight-charts": "^5.1.0",
+    "next": "^16.1.1",
     "papaparse": "^5.5.3",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
     "react-icons": "^5.5.0",
     "react-responsive-carousel": "^3.2.23",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.18",
     "autoprefixer": "^10.4.23",
     "postcss": "^8.5.6",
-    "tailwindcss": "^3.4.19"
+    "tailwindcss": "^4.1.18"
   }
 }

@@ -1,9 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-
 @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+@import "tailwindcss";
 
 .lobster-regular {
   font-family: "Lobster", sans-serif;
@@ -96,8 +93,6 @@ body {
   box-shadow: none;
   transform: translateY(0);
 }
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
 
 body {
     font-family: Inter, sans-serif;

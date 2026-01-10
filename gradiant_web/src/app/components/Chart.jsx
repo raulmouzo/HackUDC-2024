@@ -1,4 +1,4 @@
-import { createChart, ColorType } from 'lightweight-charts';
+import { createChart, ColorType, AreaSeries } from 'lightweight-charts';
 import React, { useEffect, useRef } from 'react';
 
 export const Chart = props => {
@@ -56,7 +56,11 @@ export const Chart = props => {
 			chart.timeScale().fitContent();
 			
 			
-			const newSeries = chart.addAreaSeries({ lineColor, topColor: areaTopColor, bottomColor: areaBottomColor });
+			const newSeries = chart.addSeries(AreaSeries, {
+				lineColor,
+				topColor: areaTopColor,
+				bottomColor: areaBottomColor,
+			});
 			newSeries.setData(data);
 
 			window.addEventListener('resize', handleResize);
@@ -75,11 +79,9 @@ export const Chart = props => {
         <h2 className="text-[36px] text-white mb-5">
             {name}
         </h2>
-		<p class="text-white/[.5] text-[20px]">{subtitle}</p>
+		<p className="text-white/[.5] text-[20px]">{subtitle}</p>
         <div ref={chartContainerRef} />
     </div>
   );
 };
-
-
 
