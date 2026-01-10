@@ -1,3 +1,6 @@
 {
-  "rootDirectory": "gradiant_web"
+  "framework": "nextjs",
+  "installCommand": "pnpm -C gradiant_web install",
+  "buildCommand": "pnpm -C gradiant_web run build",
+  "outputDirectory": "gradiant_web/.next"
 }
